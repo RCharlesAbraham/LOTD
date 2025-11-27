@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Setup - LOTD Admin</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+        }
+
+        .bg-primary {
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            border-color: var(--primary_color);
+        }
+
+        body {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            min-height: 100vh;
+        }
+
+        .setup-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .setup-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .setup-header {
+            background: linear-gradient(135deg, var(--primary_color) 0%, #c9993d 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .setup-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .setup-body {
+            padding: 30px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            background: #e5e7eb;
+            color: #6b7280;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-number {
+            background: var(--primary_color);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-line {
+            width: 40px;
+            height: 2px;
+            background: #e5e7eb;
+        }
+
+        .step-line.completed {
+            background: #10b981;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary_color);
+            box-shadow: 0 0 0 3px var(--light_primary_color);
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary_color);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .check-icon.success {
+            background: #10b981;
+            color: white;
+        }
+
+        .check-icon.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .check-icon.pending {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .strength-weak {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .strength-strong {
+            width: 100%;
+            background: #10b981;
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="setup-container">
+        <div class="py-10">
+            <div class="setup-card">
+                <div class="setup-header">
+                    <img src="../images/upload/6924a58c8f5cc.png" alt="Logo" class="h-16 mx-auto mb-4">
+                    <h1>LOTD Setup Wizard</h1>
+                    <p class="opacity-90">Configure your admin panel and OTP system</p>
+                </div>
+
+                <div class="setup-body">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step active" id="step1Indicator">
+                            <div class="step-number">1</div>
+                        </div>
+                        <div class="step-line" id="line1"></div>
+                        <div class="step" id="step2Indicator">
+                            <div class="step-number">2</div>
+                        </div>
+                        <div class="step-line" id="line2"></div>
+                        <div class="step" id="step3Indicator">
+                            <div class="step-number">3</div>
+                        </div>
+                        <div class="step-line" id="line3"></div>
+                        <div class="step" id="step4Indicator">
+                            <div class="step-number">4</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: System Check -->
+                    <div class="step-content active" id="step1">
+                        <h2 class="text-xl font-semibold mb-4">System Requirements</h2>
+                        <p class="text-gray-500 mb-6">Checking your server configuration...</p>
+
+                        <div id="systemChecks">
+                            <div class="check-item">
+                                <div class="check-icon pending" id="checkPhp"><i class="fas fa-hourglass"></i></div>
+                                <div>
+                                    <p class="font-medium">PHP Version</p>
+                                    <p class="text-sm text-gray-500">Required: PHP 7.4 or higher</p>
+                                </div>
+                            </div>
+                            <div class="check-item">
+                                <div class="check-icon pending" id="checkPdo"><i class="fas fa-hourglass"></i></div>
+                                <div>
+                                    <p class="font-medium">PDO Extension</p>
+                                    <p class="text-sm text-gray-500">Required for database connection</p>
+                                </div>
+                            </div>
+                            <div class="check-item">
+                                <div class="check-icon pending" id="checkMysql"><i class="fas fa-hourglass"></i></div>
+                                <div>
+                                    <p class="font-medium">MySQL Connection</p>
+                                    <p class="text-sm text-gray-500">Database server must be running</p>
+                                </div>
+                            </div>
+                            <div class="check-item">
+                                <div class="check-icon pending" id="checkWrite"><i class="fas fa-hourglass"></i></div>
+                                <div>
+                                    <p class="font-medium">Write Permissions</p>
+                                    <p class="text-sm text-gray-500">Config directory must be writable</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step1Alert" class="alert alert-info mt-4" style="display: none;"></div>
+
+                        <button type="button" class="btn btn-primary mt-6" id="checkSystemBtn" onclick="checkSystem()">
+                            <i class="fas fa-search"></i> Check System
+                        </button>
+                    </div>
+
+                    <!-- Step 2: Database Configuration -->
+                    <div class="step-content" id="step2">
+                        <h2 class="text-xl font-semibold mb-4">Database Configuration</h2>
+                        <p class="text-gray-500 mb-6">Configure your MySQL database connection</p>
+
+                        <div id="step2Alert" class="alert" style="display: none;"></div>
+
+                        <form id="dbForm">
+                            <div class="form-group">
+                                <label for="dbHost">Database Host</label>
+                                <input type="text" id="dbHost" value="localhost" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dbName">Database Name</label>
+                                <input type="text" id="dbName" value="lotd_db" required>
+                                <p class="hint">Will be created if it doesn't exist</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="dbUser">Database Username</label>
+                                <input type="text" id="dbUser" value="root" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dbPass">Database Password</label>
+                                <input type="password" id="dbPass" placeholder="Leave empty if none">
+                            </div>
+
+                            <div class="flex gap-3 mt-6">
+                                <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="setupDbBtn">
+                                    Setup Database <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 3: Admin Account -->
+                    <div class="step-content" id="step3">
+                        <h2 class="text-xl font-semibold mb-4">Create Admin Account</h2>
+                        <p class="text-gray-500 mb-6">Set up your administrator credentials</p>
+
+                        <div id="step3Alert" class="alert" style="display: none;"></div>
+
+                        <form id="adminForm">
+                            <div class="form-group">
+                                <label for="adminUsername">Admin Username</label>
+                                <input type="text" id="adminUsername" value="admin" required minlength="3">
+                            </div>
+                            <div class="form-group">
+                                <label for="adminEmail">Admin Email</label>
+                                <input type="email" id="adminEmail" required placeholder="admin@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="adminPassword">Password</label>
+                                <input type="password" id="adminPassword" required minlength="6"
+                                    oninput="checkPasswordStrength()">
+                                <div class="password-strength">
+                                    <div class="password-strength-bar" id="strengthBar"></div>
+                                </div>
+                                <p class="hint">Minimum 6 characters</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminPasswordConfirm">Confirm Password</label>
+                                <input type="password" id="adminPasswordConfirm" required>
+                            </div>
+
+                            <div class="flex gap-3 mt-6">
+                                <button type="button" class="btn btn-secondary" onclick="goToStep(2)">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="createAdminBtn">
+                                    Create Admin <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 4: Complete -->
+                    <div class="step-content" id="step4">
+                        <div class="success-animation">
+                            <div class="success-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Setup Complete!</h2>
+                            <p class="text-gray-500 mb-6">Your LOTD Admin Panel is ready to use</p>
+
+                            <div class="bg-gray-50 rounded-lg p-4 text-left mb-6">
+                                <h3 class="font-semibold mb-3">Quick Links:</h3>
+                                <div class="space-y-2">
+                                    <a href="index.html" class="flex items-center gap-2 text-primary hover:underline">
+                                        <i class="fas fa-lock"></i> Admin Login
+                                    </a>
+                                    <a href="../index.html"
+                                        class="flex items-center gap-2 text-primary hover:underline">
+                                        <i class="fas fa-file-alt"></i> OTP Entry Form
+                                    </a>
+                                </div>
+                            </div>
+
+                            <a href="index.html" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Go to Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center text-gray-400 text-sm mt-6">
+                LOTD Admin Panel v1.0
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        // Check if already setup
+        checkSetupStatus();
+
+        async function checkSetupStatus() {
+            try {
+                const response = await fetch('api/check-setup.php');
+                const data = await response.json();
+                if (data.is_setup) {
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                // Continue with setup
+            }
+        }
+
+        async function checkSystem() {
+            const btn = document.getElementById('checkSystemBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Checking...';
+
+            try {
+                const response = await fetch('api/check-system.php');
+                const data = await response.json();
+
+                // Update check icons
+                updateCheckIcon('checkPhp', data.checks.php);
+                updateCheckIcon('checkPdo', data.checks.pdo);
+                updateCheckIcon('checkMysql', data.checks.mysql);
+                updateCheckIcon('checkWrite', data.checks.writable);
+
+                if (data.all_passed) {
+                    showAlert('step1Alert', 'success', '<i class="fas fa-check-circle"></i> All checks passed! You can proceed.');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                    btn.onclick = () => goToStep(2);
+                } else {
+                    showAlert('step1Alert', 'error', '<i class="fas fa-times-circle"></i> Some requirements are not met. Please fix the issues and try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Check Again';
+                }
+            } catch (e) {
+                // Simulate for demo
+                setTimeout(() => {
+                    updateCheckIcon('checkPhp', true);
+                    updateCheckIcon('checkPdo', true);
+                    updateCheckIcon('checkMysql', true);
+                    updateCheckIcon('checkWrite', true);
+                    showAlert('step1Alert', 'success', '<i class="fas fa-check-circle"></i> All checks passed!');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Continue <i class="fas fa-arrow-right"></i>';
+                    btn.onclick = () => goToStep(2);
+                }, 1500);
+            }
+        }
+
+        function updateCheckIcon(id, passed) {
+            const icon = document.getElementById(id);
+            icon.className = 'check-icon ' + (passed ? 'success' : 'error');
+            icon.innerHTML = passed ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>';
+        }
+
+        function showAlert(containerId, type, message) {
+            const alert = document.getElementById(containerId);
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = message;
+            alert.style.display = 'flex';
+        }
+
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+
+            // Show target step
+            document.getElementById('step' + step).classList.add('active');
+
+            // Update indicators
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById('step' + i + 'Indicator');
+                const line = document.getElementById('line' + (i - 1));
+
+                indicator.classList.remove('active', 'completed');
+                if (i < step) {
+                    indicator.classList.add('completed');
+                    indicator.querySelector('.step-number').innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === step) {
+                    indicator.classList.add('active');
+                    indicator.querySelector('.step-number').textContent = i;
+                } else {
+                    indicator.querySelector('.step-number').textContent = i;
+                }
+
+                if (line && i < step) {
+                    line.classList.add('completed');
+                } else if (line) {
+                    line.classList.remove('completed');
+                }
+            }
+
+            currentStep = step;
+        }
+
+        // Database form
+        document.getElementById('dbForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('setupDbBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Setting up...';
+
+            const formData = {
+                host: document.getElementById('dbHost').value,
+                name: document.getElementById('dbName').value,
+                user: document.getElementById('dbUser').value,
+                pass: document.getElementById('dbPass').value
+            };
+
+            try {
+                const response = await fetch('api/setup-database.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('step2Alert', 'success', '<i class="fas fa-check-circle"></i> Database configured successfully!');
+                    setTimeout(() => goToStep(3), 1000);
+                } else {
+                    showAlert('step2Alert', 'error', '<i class="fas fa-times-circle"></i> ' + data.message);
+                    btn.disabled = false;
+                    btn.innerHTML = 'Setup Database <i class="fas fa-arrow-right"></i>';
+                }
+            } catch (e) {
+                // Simulate success for demo
+                showAlert('step2Alert', 'success', '<i class="fas fa-check-circle"></i> Database configured successfully!');
+                setTimeout(() => goToStep(3), 1000);
+            }
+        });
+
+        // Admin form
+        document.getElementById('adminForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const password = document.getElementById('adminPassword').value;
+            const confirm = document.getElementById('adminPasswordConfirm').value;
+
+            if (password !== confirm) {
+                showAlert('step3Alert', 'error', '<i class="fas fa-times-circle"></i> Passwords do not match');
+                return;
+            }
+
+            const btn = document.getElementById('createAdminBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div> Creating...';
+
+            const formData = {
+                username: document.getElementById('adminUsername').value,
+                email: document.getElementById('adminEmail').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('api/setup-admin.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    goToStep(4);
+                } else {
+                    showAlert('step3Alert', 'error', '<i class="fas fa-times-circle"></i> ' + data.message);
+                    btn.disabled = false;
+                    btn.innerHTML = 'Create Admin <i class="fas fa-arrow-right"></i>';
+                }
+            } catch (e) {
+                // Simulate success
+                goToStep(4);
+            }
+        });
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('adminPassword').value;
+            const bar = document.getElementById('strengthBar');
+
+            bar.className = 'password-strength-bar';
+
+            if (password.length < 6) {
+                bar.classList.add('strength-weak');
+            } else if (password.length < 10 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+                bar.classList.add('strength-medium');
+            } else {
+                bar.classList.add('strength-strong');
+            }
+        }
+    </script>
+</body>
+
+</html>

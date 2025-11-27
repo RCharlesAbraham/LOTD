@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pending Entries - LOTD Admin</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+        }
+
+        .bg-primary {
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            color: var(--primary_color);
+        }
+
+        body {
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 40;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #9ca3af;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: rgba(225, 177, 104, 0.1);
+            color: var(--primary_color);
+            border-left-color: var(--primary_color);
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background-color: #f9fafb;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-warning {
+            background-color: #fffbeb;
+            color: #d97706;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary_color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 250px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background: var(--primary_color);
+            color: white;
+            border-color: var(--primary_color);
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="p-5 border-b border-gray-700">
+            <div class="flex items-center gap-3">
+                <img src="../images/upload/6924a58c8f5cc.png" alt="Logo" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-white font-bold text-lg">LOTD</h1>
+                    <p class="text-gray-400 text-xs">Admin Panel</p>
+                </div>
+            </div>
+        </div>
+        <nav class="mt-5">
+            <a href="dashboard.html" class="sidebar-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="entries.html" class="sidebar-link"><i class="fas fa-users"></i><span>All Entries</span></a>
+            <a href="verified.html" class="sidebar-link"><i class="fas fa-check-circle"></i><span>Verified</span></a>
+            <a href="pending.html" class="sidebar-link active"><i class="fas fa-clock"></i><span>Pending</span></a>
+            <a href="logs.html" class="sidebar-link"><i class="fas fa-history"></i><span>OTP Logs</span></a>
+            <a href="settings.html" class="sidebar-link"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-gray-700">
+            <button onclick="logout()" class="sidebar-link w-full text-left hover:text-red-400"><i
+                    class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Pending Entries</h1>
+                <p class="text-gray-500 text-sm">Entries awaiting OTP verification</p>
+            </div>
+            <button onclick="deleteAllPending()" class="btn btn-danger"><i class="fas fa-trash"></i>Delete All
+                Pending</button>
+        </div>
+
+        <div class="bg-white rounded-lg p-4 mb-6">
+            <div class="search-box">
+                <i class="fas fa-search text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="Search pending entries..."
+                    onkeyup="if(event.key==='Enter')loadEntries()">
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Entry #</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="entriesTable">
+                        <tr>
+                            <td colspan="6" class="text-center py-8 text-gray-500"><i
+                                    class="fas fa-spinner fa-spin mr-2"></i> Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t flex justify-between items-center">
+                <p class="text-sm text-gray-500">Showing <span id="showingFrom">0</span> to <span
+                        id="showingTo">0</span> of <span id="totalRecords">0</span></p>
+                <div class="pagination" id="pagination"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') window.location.href = 'index.html';
+        const API_BASE = 'api';
+        let currentPage = 1;
+
+        function loadEntries() {
+            const search = document.getElementById('searchInput').value;
+            fetch(`${API_BASE}/entries.php?page=${currentPage}&limit=20&status=0&search=${search}`)
+                .then(r => r.json())
+                .then(data => { if (data.success) { renderTable(data.data); renderPagination(data.pagination); } });
+        }
+
+        function renderTable(entries) {
+            if (!entries.length) { document.getElementById('entriesTable').innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-500">No pending entries</td></tr>'; return; }
+            document.getElementById('entriesTable').innerHTML = entries.map(e => `
+                <tr>
+                    <td class="font-medium">${e.entry_number}</td>
+                    <td>${escapeHtml(e.name)}</td>
+                    <td>${escapeHtml(e.email)}</td>
+                    <td>${e.phone}</td>
+                    <td>${formatDate(e.created_at)}</td>
+                    <td>
+                        <button onclick="resendOTP(${e.id})" class="text-blue-600 hover:text-blue-800 mr-2" title="Resend OTP"><i class="fas fa-paper-plane"></i></button>
+                        <button onclick="deleteEntry(${e.id})" class="text-red-600 hover:text-red-800" title="Delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderPagination(p) {
+            document.getElementById('showingFrom').textContent = ((p.page - 1) * p.limit) + 1;
+            document.getElementById('showingTo').textContent = Math.min(p.page * p.limit, p.total);
+            document.getElementById('totalRecords').textContent = p.total;
+            let h = `<button onclick="goToPage(${p.page - 1})" ${p.page <= 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
+            for (let i = 1; i <= p.total_pages && i <= 5; i++) h += `<button onclick="goToPage(${i})" class="${i === p.page ? 'active' : ''}">${i}</button>`;
+            h += `<button onclick="goToPage(${p.page + 1})" ${p.page >= p.total_pages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
+            document.getElementById('pagination').innerHTML = h;
+        }
+
+        function goToPage(p) { currentPage = p; loadEntries(); }
+        function deleteEntry(id) { if (confirm('Delete this entry?')) fetch(`${API_BASE}/entries.php?id=${id}`, { method: 'DELETE' }).then(() => loadEntries()); }
+        function deleteAllPending() { if (confirm('Delete ALL pending entries? This cannot be undone!')) { /* API call */ loadEntries(); } }
+        function resendOTP(id) {
+            fetch(`../../api/resend-otp.php`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entry_id: id }) })
+                .then(r => r.json())
+                .then(d => alert(d.message));
+        }
+        function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+        loadEntries();
+    </script>
+</body>
+
+</html>

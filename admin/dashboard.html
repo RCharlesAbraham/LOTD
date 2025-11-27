@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - LOTD Admin</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+            --profile_primary_color: #e1b16852;
+            --middle_light_primary_color: #e1b16885;
+        }
+
+        .bg-primary {
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            border-color: var(--primary_color);
+        }
+
+        .hover\:bg-primary:hover {
+            background-color: var(--primary_color);
+        }
+
+        body {
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 40;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #9ca3af;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: rgba(225, 177, 104, 0.1);
+            color: var(--primary_color);
+            border-left-color: var(--primary_color);
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background-color: #f9fafb;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #ecfdf5;
+            color: #059669;
+        }
+
+        .badge-warning {
+            background-color: #fffbeb;
+            color: #d97706;
+        }
+
+        .badge-danger {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 200px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary_color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f9fafb;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button.active {
+            background: var(--primary_color);
+            color: white;
+            border-color: var(--primary_color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-overlay.hidden {
+            display: none !important;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            z-index: 10;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background: #f9fafb;
+        }
+
+        .dropdown-item.danger {
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="p-5 border-b border-gray-700">
+            <div class="flex items-center gap-3">
+                <img src="../images/upload/6924a58c8f5cc.png" alt="Logo" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-white font-bold text-lg">LOTD</h1>
+                    <p class="text-gray-400 text-xs">Admin Panel</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="mt-5">
+            <a href="dashboard.html" class="sidebar-link active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="entries.html" class="sidebar-link">
+                <i class="fas fa-users"></i>
+                <span>All Entries</span>
+            </a>
+            <a href="verified.html" class="sidebar-link">
+                <i class="fas fa-check-circle"></i>
+                <span>Verified</span>
+            </a>
+            <a href="pending.html" class="sidebar-link">
+                <i class="fas fa-clock"></i>
+                <span>Pending</span>
+            </a>
+            <a href="logs.html" class="sidebar-link">
+                <i class="fas fa-history"></i>
+                <span>OTP Logs</span>
+            </a>
+            <a href="settings.html" class="sidebar-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-gray-700">
+            <button onclick="logout()" class="sidebar-link w-full text-left hover:text-red-400">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <p class="text-gray-500 text-sm">Welcome back, <span id="adminName">Admin</span></p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="refreshData()" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('userDropdown')"
+                        class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border">
+                        <div
+                            class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                            A
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-sm"></i>
+                    </button>
+                    <div id="userDropdown" class="dropdown-menu">
+                        <div class="dropdown-item" onclick="window.location.href='settings.html'">
+                            <i class="fas fa-cog"></i> Settings
+                        </div>
+                        <div class="dropdown-item danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Entries</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-1" id="totalEntries">-</h3>
+                    </div>
+                    <div class="stat-icon bg-blue-100 text-blue-600">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">
+                    <i class="fas fa-arrow-up text-green-500 mr-1"></i>
+                    <span id="entriesToday">0</span> today
+                </p>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Verified</p>
+                        <h3 class="text-3xl font-bold text-green-600 mt-1" id="verifiedCount">-</h3>
+                    </div>
+                    <div class="stat-icon bg-green-100 text-green-600">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">
+                    <span id="verifiedPercent">0</span>% verification rate
+                </p>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Pending</p>
+                        <h3 class="text-3xl font-bold text-yellow-600 mt-1" id="pendingCount">-</h3>
+                    </div>
+                    <div class="stat-icon bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">
+                    Awaiting verification
+                </p>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">OTPs Sent</p>
+                        <h3 class="text-3xl font-bold text-purple-600 mt-1" id="otpsSent">-</h3>
+                    </div>
+                    <div class="stat-icon bg-purple-100 text-purple-600">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">
+                    Total OTPs generated
+                </p>
+            </div>
+        </div>
+
+        <!-- Recent Entries Table -->
+        <div class="table-container">
+            <div class="p-5 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-800">Recent Entries</h2>
+                <a href="entries.html" class="text-primary text-sm hover:underline">View All →</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Entry #</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentEntriesTable">
+                        <tr>
+                            <td colspan="7" class="text-center py-8 text-gray-500">
+                                <i class="fas fa-spinner fa-spin mr-2"></i> Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- View Entry Modal -->
+    <div id="viewModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h3 class="text-lg font-semibold">Entry Details</h3>
+                <button onclick="closeModal('viewModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-5" id="modalContent">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('adminName').textContent = sessionStorage.getItem('adminUser') || 'Admin';
+
+        // API Base URL
+        const API_BASE = 'api';
+
+        // Load dashboard data
+        function loadDashboardData() {
+            fetch(`${API_BASE}/stats.php`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalEntries').textContent = data.data.total_entries;
+                        document.getElementById('verifiedCount').textContent = data.data.verified_count;
+                        document.getElementById('pendingCount').textContent = data.data.pending_count;
+                        document.getElementById('otpsSent').textContent = data.data.otps_sent;
+                        document.getElementById('entriesToday').textContent = data.data.entries_today;
+
+                        const rate = data.data.total_entries > 0
+                            ? Math.round((data.data.verified_count / data.data.total_entries) * 100)
+                            : 0;
+                        document.getElementById('verifiedPercent').textContent = rate;
+                    }
+                })
+                .catch(error => console.error('Error loading stats:', error));
+
+            // Load recent entries
+            fetch(`${API_BASE}/entries.php?limit=10`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        const tbody = document.getElementById('recentEntriesTable');
+                        tbody.innerHTML = data.data.map(entry => `
+                            <tr>
+                                <td class="font-medium">${entry.entry_number}</td>
+                                <td>${escapeHtml(entry.name)}</td>
+                                <td>${escapeHtml(entry.email)}</td>
+                                <td>${entry.phone}</td>
+                                <td>
+                                    <span class="badge ${entry.is_verified ? 'badge-success' : 'badge-warning'}">
+                                        ${entry.is_verified ? 'Verified' : 'Pending'}
+                                    </span>
+                                </td>
+                                <td>${formatDate(entry.created_at)}</td>
+                                <td>
+                                    <button onclick="viewEntry(${entry.id})" class="text-blue-600 hover:text-blue-800 mr-2" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="deleteEntry(${entry.id})" class="text-red-600 hover:text-red-800" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        document.getElementById('recentEntriesTable').innerHTML = `
+                            <tr>
+                                <td colspan="7" class="text-center py-8 text-gray-500">
+                                    No entries found
+                                </td>
+                            </tr>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('recentEntriesTable').innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center py-8 text-red-500">
+                                Error loading data
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        // View entry details
+        function viewEntry(id) {
+            fetch(`${API_BASE}/entries.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const entry = data.data;
+                        document.getElementById('modalContent').innerHTML = `
+                            <div class="space-y-4">
+                                <div class="flex justify-center mb-4">
+                                    <span class="badge ${entry.is_verified ? 'badge-success' : 'badge-warning'} text-base px-4 py-2">
+                                        ${entry.is_verified ? '✓ Verified' : '⏳ Pending'}
+                                    </span>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-xs text-gray-500">Entry Number</p>
+                                            <p class="font-semibold">${entry.entry_number}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500">Created At</p>
+                                            <p class="font-semibold">${formatDate(entry.created_at)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Full Name</p>
+                                    <p class="font-medium text-lg">${escapeHtml(entry.name)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Email</p>
+                                    <p class="font-medium">${escapeHtml(entry.email)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Phone</p>
+                                    <p class="font-medium">${entry.phone}</p>
+                                </div>
+                                ${entry.verified_at ? `
+                                <div>
+                                    <p class="text-xs text-gray-500">Verified At</p>
+                                    <p class="font-medium text-green-600">${formatDate(entry.verified_at)}</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                        document.getElementById('viewModal').classList.remove('hidden');
+                    }
+                });
+        }
+
+        // Delete entry
+        function deleteEntry(id) {
+            if (confirm('Are you sure you want to delete this entry? This action cannot be undone.')) {
+                fetch(`${API_BASE}/entries.php?id=${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadDashboardData();
+                        } else {
+                            alert(data.message || 'Failed to delete entry');
+                        }
+                    });
+            }
+        }
+
+        // Helper functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function toggleDropdown(id) {
+            document.getElementById(id).classList.toggle('show');
+        }
+
+        function refreshData() {
+            loadDashboardData();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminUser');
+            sessionStorage.removeItem('adminToken');
+            window.location.href = 'index.html';
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
+            }
+        });
+
+        // Load data on page load
+        loadDashboardData();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Entry Successful</title>
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/select2.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+            --profile_primary_color: #e1b16852;
+            --middle_light_primary_color: #e1b16885;
+        }
+
+        .bg-primary {
+            --tw-bg-opacity: 1;
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            --tw-text-opacity: 1;
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            --tw-border-opacity: 1;
+            border-color: var(--primary_color);
+        }
+
+        body {
+            background-image: url(frontend/images/ticket-pattern.png);
+            background-repeat: repeat;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon i {
+            color: white;
+            font-size: 40px;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .checkmark {
+            animation: checkmark 0.5s ease-out 0.3s both;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: #111827;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .entry-number {
+            background: linear-gradient(135deg, var(--primary_color) 0%, #d4a056 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex justify-center mt-24">
+        <div
+            class="bg-white shadow-2xl rounded-md p-6 mt-10 1xl:w-[28%] xl:w-[35%] lg:w-[40%] xmd:w-[50%] md:w-[60%] sm:w-[70%] xxsm:w-full">
+
+            <div class="flex justify-center mt-2">
+                <img src="images/upload/6924a58c8f5cc.png" alt="" class="object-cover w-auto h-16">
+            </div>
+
+            <!-- Success Icon -->
+            <div class="mt-6">
+                <div class="success-icon">
+                    <i class="fas fa-check checkmark"></i>
+                </div>
+            </div>
+
+            <h1 class="pt-6 text-2xl font-bold leading-9 text-center text-black font-poppins">
+                Verification Successful!</h1>
+
+            <p class="text-center text-gray-500 text-sm mt-2 font-poppins">
+                Your entry has been confirmed. Here are your details:
+            </p>
+
+            <!-- Entry Number -->
+            <div class="flex justify-center mt-4">
+                <span class="entry-number" id="entryNumber">ENTRY #XXXXXX</span>
+            </div>
+
+            <!-- User Details Card -->
+            <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Entry Details</h3>
+
+                <div class="info-row">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value" id="displayName">-</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id="displayEmail">-</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Phone</span>
+                    <span class="info-value" id="displayPhone">-</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Verified At</span>
+                    <span class="info-value" id="displayTime">-</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 space-y-3">
+                <button id="downloadBtn"
+                    class="w-full py-3 text-sm font-medium leading-4 text-white rounded-lg font-poppins bg-primary focus:outline-none hover:opacity-90 transition-opacity">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Confirmation
+                </button>
+
+                <button id="newEntryBtn"
+                    class="w-full py-3 text-sm font-medium leading-4 rounded-lg font-poppins border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all focus:outline-none">
+                    <i class="fas fa-plus mr-2"></i>
+                    New Entry
+                </button>
+            </div>
+
+            <!-- Info Note -->
+            <div class="mt-6 pt-4 border-t border-gray-200">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2"></i>
+                    <p class="text-xs text-gray-500">
+                        A confirmation email has been sent to your registered email address.
+                        Please keep your entry number safe for future reference.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if user is verified
+            const isVerified = sessionStorage.getItem('otpVerified');
+            const userData = JSON.parse(sessionStorage.getItem('otpUserData') || '{}');
+            const verifiedData = JSON.parse(sessionStorage.getItem('verifiedData') || '{}');
+            const entryNumber = sessionStorage.getItem('entryNumber') || verifiedData.entry_number;
+
+            // If not verified, redirect to entry form
+            if (!isVerified || isVerified !== 'true') {
+                window.location.href = 'entry-form.html';
+                return;
+            }
+
+            // Display entry number from database
+            document.getElementById('entryNumber').textContent = entryNumber || 'LOTD-XXXXXX';
+
+            // Display user data (prefer verified data from API)
+            const displayName = verifiedData.name || userData.name || '-';
+            const displayEmail = verifiedData.email || userData.email || '-';
+            const displayPhone = verifiedData.phone || userData.phone || '-';
+
+            document.getElementById('displayName').textContent = displayName;
+            document.getElementById('displayEmail').textContent = displayEmail;
+            document.getElementById('displayPhone').textContent = displayPhone;
+
+            // Display verification time
+            const verifiedAt = verifiedData.verified_at ? new Date(verifiedData.verified_at) : new Date();
+            const timeString = verifiedAt.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('displayTime').textContent = timeString;
+
+            // Download button handler
+            document.getElementById('downloadBtn').addEventListener('click', function () {
+                // Create confirmation content
+                const content = `
+========================================
+        ENTRY CONFIRMATION
+========================================
+
+${entryNumber}
+
+Name: ${displayName}
+Email: ${displayEmail}
+Phone: ${displayPhone}
+
+Verified At: ${timeString}
+
+========================================
+Thank you for your entry!
+Please keep this confirmation for your records.
+========================================
+                `.trim();
+
+                // Create and download file
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `entry-confirmation-${(entryNumber || 'UNKNOWN').replace('LOTD', '')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // New entry button handler
+            document.getElementById('newEntryBtn').addEventListener('click', function () {
+                // Clear session data
+                sessionStorage.removeItem('otpUserData');
+                sessionStorage.removeItem('otpVerified');
+                sessionStorage.removeItem('entryId');
+                sessionStorage.removeItem('entryNumber');
+                sessionStorage.removeItem('verifiedData');
+
+                // Redirect to entry form
+                window.location.href = 'entry-form.html';
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</body>
+
+</html>

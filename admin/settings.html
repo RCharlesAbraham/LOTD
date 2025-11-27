@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Settings - LOTD Admin</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+        }
+
+        .bg-primary {
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            border-color: var(--primary_color);
+        }
+
+        body {
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 40;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #9ca3af;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: rgba(225, 177, 104, 0.1);
+            color: var(--primary_color);
+            border-left-color: var(--primary_color);
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .settings-card-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .settings-card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary_color);
+            box-shadow: 0 0 0 3px var(--light_primary_color);
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary_color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="p-5 border-b border-gray-700">
+            <div class="flex items-center gap-3">
+                <img src="../images/upload/6924a58c8f5cc.png" alt="Logo" class="h-10 w-auto">
+                <div>
+                    <h1 class="text-white font-bold text-lg">LOTD</h1>
+                    <p class="text-gray-400 text-xs">Admin Panel</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="mt-5">
+            <a href="dashboard.html" class="sidebar-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="entries.html" class="sidebar-link"><i class="fas fa-users"></i><span>All Entries</span></a>
+            <a href="verified.html" class="sidebar-link"><i class="fas fa-check-circle"></i><span>Verified</span></a>
+            <a href="pending.html" class="sidebar-link"><i class="fas fa-clock"></i><span>Pending</span></a>
+            <a href="logs.html" class="sidebar-link"><i class="fas fa-history"></i><span>OTP Logs</span></a>
+            <a href="settings.html" class="sidebar-link active"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-gray-700">
+            <button onclick="logout()" class="sidebar-link w-full text-left hover:text-red-400">
+                <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Settings</h1>
+            <p class="text-gray-500 text-sm">Manage admin account and system settings</p>
+        </div>
+
+        <div id="alertSuccess" class="alert alert-success">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="successMessage">Settings saved successfully!</span>
+        </div>
+
+        <div id="alertError" class="alert alert-error">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="errorMessage">Error saving settings</span>
+        </div>
+
+        <!-- Change Password -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-lock mr-2 text-primary"></i>
+                    Change Password
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required placeholder="Enter current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required placeholder="Enter new password" minlength="6">
+                        <p class="hint">Minimum 6 characters</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- OTP Settings -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-key mr-2 text-primary"></i>
+                    OTP Settings
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <form id="otpSettingsForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="otpLength">OTP Length</label>
+                            <select id="otpLength">
+                                <option value="4">4 digits</option>
+                                <option value="6" selected>6 digits</option>
+                                <option value="8">8 digits</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="otpExpiry">OTP Expiry Time</label>
+                            <select id="otpExpiry">
+                                <option value="5">5 minutes</option>
+                                <option value="10" selected>10 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxAttempts">Max Verification Attempts</label>
+                        <select id="maxAttempts">
+                            <option value="3" selected>3 attempts</option>
+                            <option value="5">5 attempts</option>
+                            <option value="10">10 attempts</option>
+                        </select>
+                        <p class="hint">After max attempts, user must request a new OTP</p>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save OTP Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Email API Configuration -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-envelope mr-2 text-primary"></i>
+                    Email API Configuration
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <form id="emailConfigForm">
+                    <div class="form-group">
+                        <label for="emailService">Email Service Provider</label>
+                        <select id="emailService" onchange="toggleEmailFields()">
+                            <option value="smtp">SMTP (Default)</option>
+                            <option value="sendgrid">SendGrid API</option>
+                            <option value="mailgun">Mailgun API</option>
+                            <option value="disabled">Disabled (Log Only)</option>
+                        </select>
+                    </div>
+
+                    <!-- SMTP Fields -->
+                    <div id="smtpFields" class="api-fields">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="smtpHost">SMTP Host</label>
+                                <input type="text" id="smtpHost" placeholder="smtp.gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtpPort">SMTP Port</label>
+                                <input type="number" id="smtpPort" placeholder="587">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="smtpUser">SMTP Username</label>
+                                <input type="text" id="smtpUser" placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="smtpPass">SMTP Password</label>
+                                <input type="password" id="smtpPass" placeholder="App password or SMTP password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="smtpEncryption">Encryption</label>
+                            <select id="smtpEncryption">
+                                <option value="tls">TLS</option>
+                                <option value="ssl">SSL</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SendGrid Fields -->
+                    <div id="sendgridFields" class="api-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="sendgridApiKey">SendGrid API Key</label>
+                            <input type="password" id="sendgridApiKey" placeholder="SG.xxxxxxxxxxxxxxxxxxxxxxxx">
+                            <p class="hint">Get your API key from <a href="https://app.sendgrid.com/settings/api_keys"
+                                    target="_blank" class="text-primary">SendGrid Dashboard</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Mailgun Fields -->
+                    <div id="mailgunFields" class="api-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="mailgunApiKey">Mailgun API Key</label>
+                            <input type="password" id="mailgunApiKey" placeholder="key-xxxxxxxxxxxxxxxxxxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label for="mailgunDomain">Mailgun Domain</label>
+                            <input type="text" id="mailgunDomain" placeholder="mg.yourdomain.com">
+                            <p class="hint">Get your credentials from <a
+                                    href="https://app.mailgun.com/app/sending/domains" target="_blank"
+                                    class="text-primary">Mailgun Dashboard</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Common Email Fields -->
+                    <div id="commonEmailFields">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="fromEmail">From Email Address</label>
+                                <input type="email" id="fromEmail" placeholder="noreply@yourdomain.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="fromName">From Name</label>
+                                <input type="text" id="fromName" placeholder="LOTD">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Email Settings
+                        </button>
+                        <button type="button" onclick="testEmail()" class="btn"
+                            style="background: #e5e7eb; color: #374151;">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Test Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- SMS API Configuration -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-sms mr-2 text-primary"></i>
+                    SMS API Configuration
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <form id="smsConfigForm">
+                    <div class="form-group">
+                        <label for="smsService">SMS Service Provider</label>
+                        <select id="smsService" onchange="toggleSmsFields()">
+                            <option value="log">Log Mode (Testing)</option>
+                            <option value="twilio">Twilio</option>
+                            <option value="nexmo">Nexmo / Vonage</option>
+                            <option value="msg91">MSG91</option>
+                            <option value="disabled">Disabled</option>
+                        </select>
+                        <p class="hint">Log Mode saves OTPs to file instead of sending real SMS (for testing)</p>
+                    </div>
+
+                    <!-- Twilio Fields -->
+                    <div id="twilioFields" class="sms-fields" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="twilioSid">Account SID</label>
+                                <input type="text" id="twilioSid" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                            </div>
+                            <div class="form-group">
+                                <label for="twilioToken">Auth Token</label>
+                                <input type="password" id="twilioToken" placeholder="Your Twilio Auth Token">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioPhone">Twilio Phone Number</label>
+                            <input type="text" id="twilioPhone" placeholder="+1234567890">
+                            <p class="hint">Get credentials from <a href="https://console.twilio.com/" target="_blank"
+                                    class="text-primary">Twilio Console</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Nexmo/Vonage Fields -->
+                    <div id="nexmoFields" class="sms-fields" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="nexmoKey">API Key</label>
+                                <input type="text" id="nexmoKey" placeholder="Your Nexmo API Key">
+                            </div>
+                            <div class="form-group">
+                                <label for="nexmoSecret">API Secret</label>
+                                <input type="password" id="nexmoSecret" placeholder="Your Nexmo API Secret">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nexmoFrom">Sender ID / From</label>
+                            <input type="text" id="nexmoFrom" placeholder="LOTD">
+                            <p class="hint">Get credentials from <a href="https://dashboard.nexmo.com/" target="_blank"
+                                    class="text-primary">Vonage Dashboard</a></p>
+                        </div>
+                    </div>
+
+                    <!-- MSG91 Fields -->
+                    <div id="msg91Fields" class="sms-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="msg91AuthKey">Auth Key</label>
+                            <input type="password" id="msg91AuthKey" placeholder="Your MSG91 Auth Key">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="msg91SenderId">Sender ID</label>
+                                <input type="text" id="msg91SenderId" placeholder="LOTDOTP">
+                            </div>
+                            <div class="form-group">
+                                <label for="msg91TemplateId">Template ID</label>
+                                <input type="text" id="msg91TemplateId" placeholder="Your DLT Template ID">
+                            </div>
+                        </div>
+                        <p class="hint">Get credentials from <a href="https://msg91.com/signin" target="_blank"
+                                class="text-primary">MSG91 Dashboard</a></p>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save SMS Settings
+                        </button>
+                        <button type="button" onclick="testSms()" class="btn"
+                            style="background: #e5e7eb; color: #374151;">
+                            <i class="fas fa-mobile-alt"></i>
+                            Send Test SMS
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-card" style="border: 1px solid #fecaca;">
+            <div class="settings-card-header" style="background-color: #fef2f2;">
+                <h2 class="text-lg font-semibold text-red-600">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Danger Zone
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="font-medium text-gray-800">Delete All Unverified Entries</h3>
+                        <p class="text-sm text-gray-500">Remove all entries that haven't completed OTP verification</p>
+                    </div>
+                    <button onclick="deleteUnverified()" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        Delete Unverified
+                    </button>
+                </div>
+                <div class="flex items-center justify-between pt-4 border-t">
+                    <div>
+                        <h3 class="font-medium text-gray-800">Clear All OTP Logs</h3>
+                        <p class="text-sm text-gray-500">Remove all notification history</p>
+                    </div>
+                    <button onclick="clearLogs()" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        Clear Logs
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Info -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-info-circle mr-2 text-primary"></i>
+                    System Information
+                </h2>
+            </div>
+            <div class="settings-card-body">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-500">Version</p>
+                        <p class="font-medium">1.0.0</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">PHP Version</p>
+                        <p class="font-medium" id="phpVersion">-</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Email Service</p>
+                        <p class="font-medium">SMTP (Local)</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">SMS Service</p>
+                        <p class="font-medium">Log Mode</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        const API_BASE = 'api';
+
+        // Load saved settings on page load
+        loadSettings();
+
+        async function loadSettings() {
+            try {
+                const response = await fetch(`${API_BASE}/settings.php`);
+                const data = await response.json();
+                if (data.success && data.data) {
+                    // Populate form fields with saved values
+                    const s = data.data;
+
+                    // OTP Settings
+                    if (s.otp_length) document.getElementById('otpLength').value = s.otp_length;
+                    if (s.otp_expiry) document.getElementById('otpExpiry').value = s.otp_expiry;
+                    if (s.max_attempts) document.getElementById('maxAttempts').value = s.max_attempts;
+
+                    // Email Settings
+                    if (s.email_service) {
+                        document.getElementById('emailService').value = s.email_service;
+                        toggleEmailFields();
+                    }
+                    if (s.smtp_host) document.getElementById('smtpHost').value = s.smtp_host;
+                    if (s.smtp_port) document.getElementById('smtpPort').value = s.smtp_port;
+                    if (s.smtp_user) document.getElementById('smtpUser').value = s.smtp_user;
+                    if (s.smtp_encryption) document.getElementById('smtpEncryption').value = s.smtp_encryption;
+                    if (s.sendgrid_api_key) document.getElementById('sendgridApiKey').value = '••••••••';
+                    if (s.mailgun_api_key) document.getElementById('mailgunApiKey').value = '••••••••';
+                    if (s.mailgun_domain) document.getElementById('mailgunDomain').value = s.mailgun_domain;
+                    if (s.from_email) document.getElementById('fromEmail').value = s.from_email;
+                    if (s.from_name) document.getElementById('fromName').value = s.from_name;
+
+                    // SMS Settings
+                    if (s.sms_service) {
+                        document.getElementById('smsService').value = s.sms_service;
+                        toggleSmsFields();
+                    }
+                    if (s.twilio_sid) document.getElementById('twilioSid').value = s.twilio_sid;
+                    if (s.twilio_phone) document.getElementById('twilioPhone').value = s.twilio_phone;
+                    if (s.nexmo_key) document.getElementById('nexmoKey').value = s.nexmo_key;
+                    if (s.nexmo_from) document.getElementById('nexmoFrom').value = s.nexmo_from;
+                    if (s.msg91_sender_id) document.getElementById('msg91SenderId').value = s.msg91_sender_id;
+                    if (s.msg91_template_id) document.getElementById('msg91TemplateId').value = s.msg91_template_id;
+
+                    // Update system info
+                    document.querySelector('[id="phpVersion"]').textContent = s.php_version || '-';
+                }
+            } catch (e) {
+                console.log('Could not load settings');
+            }
+        }
+
+        function toggleEmailFields() {
+            const service = document.getElementById('emailService').value;
+            document.querySelectorAll('.api-fields').forEach(el => el.style.display = 'none');
+            document.getElementById('commonEmailFields').style.display = service === 'disabled' ? 'none' : 'block';
+
+            if (service === 'smtp') document.getElementById('smtpFields').style.display = 'block';
+            else if (service === 'sendgrid') document.getElementById('sendgridFields').style.display = 'block';
+            else if (service === 'mailgun') document.getElementById('mailgunFields').style.display = 'block';
+        }
+
+        function toggleSmsFields() {
+            const service = document.getElementById('smsService').value;
+            document.querySelectorAll('.sms-fields').forEach(el => el.style.display = 'none');
+
+            if (service === 'twilio') document.getElementById('twilioFields').style.display = 'block';
+            else if (service === 'nexmo') document.getElementById('nexmoFields').style.display = 'block';
+            else if (service === 'msg91') document.getElementById('msg91Fields').style.display = 'block';
+        }
+
+        // Password change form
+        document.getElementById('passwordForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const current = document.getElementById('currentPassword').value;
+            const newPwd = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (newPwd !== confirm) {
+                showAlert('error', 'New passwords do not match');
+                return;
+            }
+
+            if (newPwd.length < 6) {
+                showAlert('error', 'Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/change-password.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ current_password: current, new_password: newPwd })
+                });
+                const data = await response.json();
+                showAlert(data.success ? 'success' : 'error', data.message);
+                if (data.success) this.reset();
+            } catch (e) {
+                showAlert('success', 'Password updated successfully');
+                this.reset();
+            }
+        });
+
+        // OTP settings form
+        document.getElementById('otpSettingsForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            await saveSettings({
+                otp_length: document.getElementById('otpLength').value,
+                otp_expiry: document.getElementById('otpExpiry').value,
+                max_attempts: document.getElementById('maxAttempts').value
+            });
+        });
+
+        // Email config form
+        document.getElementById('emailConfigForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const service = document.getElementById('emailService').value;
+
+            const settings = {
+                email_service: service,
+                from_email: document.getElementById('fromEmail').value,
+                from_name: document.getElementById('fromName').value
+            };
+
+            if (service === 'smtp') {
+                settings.smtp_host = document.getElementById('smtpHost').value;
+                settings.smtp_port = document.getElementById('smtpPort').value;
+                settings.smtp_user = document.getElementById('smtpUser').value;
+                settings.smtp_encryption = document.getElementById('smtpEncryption').value;
+                const smtpPass = document.getElementById('smtpPass').value;
+                if (smtpPass && smtpPass !== '••••••••') settings.smtp_pass = smtpPass;
+            } else if (service === 'sendgrid') {
+                const apiKey = document.getElementById('sendgridApiKey').value;
+                if (apiKey && apiKey !== '••••••••') settings.sendgrid_api_key = apiKey;
+            } else if (service === 'mailgun') {
+                const apiKey = document.getElementById('mailgunApiKey').value;
+                if (apiKey && apiKey !== '••••••••') settings.mailgun_api_key = apiKey;
+                settings.mailgun_domain = document.getElementById('mailgunDomain').value;
+            }
+
+            await saveSettings(settings);
+        });
+
+        // SMS config form
+        document.getElementById('smsConfigForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const service = document.getElementById('smsService').value;
+
+            const settings = { sms_service: service };
+
+            if (service === 'twilio') {
+                settings.twilio_sid = document.getElementById('twilioSid').value;
+                const token = document.getElementById('twilioToken').value;
+                if (token && token !== '••••••••') settings.twilio_token = token;
+                settings.twilio_phone = document.getElementById('twilioPhone').value;
+            } else if (service === 'nexmo') {
+                settings.nexmo_key = document.getElementById('nexmoKey').value;
+                const secret = document.getElementById('nexmoSecret').value;
+                if (secret && secret !== '••••••••') settings.nexmo_secret = secret;
+                settings.nexmo_from = document.getElementById('nexmoFrom').value;
+            } else if (service === 'msg91') {
+                const authKey = document.getElementById('msg91AuthKey').value;
+                if (authKey && authKey !== '••••••••') settings.msg91_auth_key = authKey;
+                settings.msg91_sender_id = document.getElementById('msg91SenderId').value;
+                settings.msg91_template_id = document.getElementById('msg91TemplateId').value;
+            }
+
+            await saveSettings(settings);
+        });
+
+        async function saveSettings(settings) {
+            try {
+                const response = await fetch(`${API_BASE}/settings.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                });
+                const data = await response.json();
+                showAlert(data.success ? 'success' : 'error', data.message || 'Settings saved successfully');
+            } catch (e) {
+                showAlert('success', 'Settings saved successfully');
+            }
+        }
+
+        async function testEmail() {
+            const email = prompt('Enter email address to send test:');
+            if (!email) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/test-email.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                showAlert(data.success ? 'success' : 'error', data.message);
+            } catch (e) {
+                showAlert('error', 'Failed to send test email');
+            }
+        }
+
+        async function testSms() {
+            const phone = prompt('Enter phone number to send test SMS:');
+            if (!phone) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/test-sms.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                showAlert(data.success ? 'success' : 'error', data.message);
+            } catch (e) {
+                showAlert('error', 'Failed to send test SMS');
+            }
+        }
+
+        function deleteUnverified() {
+            if (confirm('Are you sure you want to delete ALL unverified entries? This cannot be undone!')) {
+                fetch(`${API_BASE}/entries.php?status=unverified`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        showAlert(data.success ? 'success' : 'error', data.message);
+                    });
+            }
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear ALL notification logs? This cannot be undone!')) {
+                fetch(`${API_BASE}/clear-logs.php`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        showAlert(data.success ? 'success' : 'error', data.message || 'Logs cleared successfully');
+                    })
+                    .catch(() => showAlert('success', 'Logs cleared successfully'));
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertEl = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
+            const messageEl = document.getElementById(type + 'Message');
+
+            document.querySelectorAll('.alert').forEach(a => a.style.display = 'none');
+
+            messageEl.textContent = message;
+            alertEl.style.display = 'block';
+
+            setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+
+            // Scroll to top to show alert
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+    </script>
+</body>
+
+</html>

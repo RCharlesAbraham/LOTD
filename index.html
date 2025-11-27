@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LOTD - Welcome</title>
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .landing-container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo-section img {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .logo-section h1 {
+            color: white;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .logo-section h1 span {
+            color: var(--primary_color);
+        }
+
+        .logo-section p {
+            color: #9ca3af;
+            font-size: 18px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-section h1 {
+                font-size: 32px;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary_color) 0%, #c9993d 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            opacity: 0.1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary_color);
+            box-shadow: 0 20px 40px rgba(225, 177, 104, 0.2);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .card-admin .card-icon {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .card-otp .card-icon {
+            background: linear-gradient(135deg, var(--primary_color) 0%, #c9993d 100%);
+            color: white;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card h2 {
+            color: white;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #9ca3af;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .card-admin .card-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .card-otp .card-btn {
+            background: linear-gradient(135deg, var(--primary_color) 0%, #c9993d 100%);
+            color: white;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-features {
+            text-align: left;
+            margin: 25px 0;
+            padding: 0 10px;
+            list-style: none;
+        }
+
+        .card-features li {
+            color: #d1d5db;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-features li i {
+            color: var(--primary_color);
+            font-size: 12px;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 50px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .footer-text a {
+            color: var(--primary_color);
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .badge-admin {
+            background: rgba(79, 70, 229, 0.2);
+            color: #818cf8;
+        }
+
+        .badge-otp {
+            background: rgba(225, 177, 104, 0.2);
+            color: var(--primary_color);
+        }
+
+        .setup-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .setup-link:hover {
+            background: var(--primary_color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="landing-container">
+        <div class="logo-section">
+            <img src="images/upload/6924a58c8f5cc.png" alt="LOTD Logo">
+            <h1>Welcome to <span>LOTD</span></h1>
+            <p>OTP Verification System Demo</p>
+        </div>
+
+        <div class="cards-container">
+            <!-- Admin Panel Card -->
+            <div class="card card-admin" onclick="window.location.href='admin/index.html'">
+                <div class="card-content">
+                    <span class="badge badge-admin">Administrator</span>
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h2>Admin Panel</h2>
+                    <p>Manage entries, view statistics, configure OTP settings, and monitor verification logs.</p>
+
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> Dashboard with Analytics</li>
+                        <li><i class="fas fa-check"></i> Manage All Entries</li>
+                        <li><i class="fas fa-check"></i> Email & SMS Configuration</li>
+                        <li><i class="fas fa-check"></i> Export Data to CSV</li>
+                    </ul>
+
+                    <a href="admin/index.html" class="card-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Access Admin Panel
+                    </a>
+                </div>
+            </div>
+
+            <!-- OTP Entry Card -->
+            <div class="card card-otp" onclick="window.location.href='entry-form.html'">
+                <div class="card-content">
+                    <span class="badge badge-otp">User Entry</span>
+                    <div class="card-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h2>OTP Verification</h2>
+                    <p>Submit your details and verify your identity through Email and SMS one-time password.</p>
+
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> Simple Registration Form</li>
+                        <li><i class="fas fa-check"></i> Receive OTP via Email</li>
+                        <li><i class="fas fa-check"></i> Receive OTP via SMS</li>
+                        <li><i class="fas fa-check"></i> Quick Verification Process</li>
+                    </ul>
+
+                    <a href="entry-form.html" class="card-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Start Verification
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-text">
+            <p>LOTD OTP Verification System v1.0</p>
+            <p style="margin-top: 8px;">
+                Need help? <a href="admin/setup.html">Run Setup Wizard</a>
+            </p>
+        </div>
+    </div>
+
+    <a href="admin/setup.html" class="setup-link">
+        <i class="fas fa-cog"></i> Setup Wizard
+    </a>
+</body>
+
+</html>

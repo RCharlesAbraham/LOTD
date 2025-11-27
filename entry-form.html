@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/select2.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+            --profile_primary_color: #e1b16852;
+            --middle_light_primary_color: #e1b16885;
+        }
+
+        .bg-primary {
+            --tw-bg-opacity: 1;
+            background-color: var(--primary_color);
+        }
+
+        .bg-primary-dark {
+            --tw-bg-opacity: 1;
+            background-color: var(--profile_primary_color);
+            /* Use the profile_primary_color variable */
+        }
+
+        .navbar-nav>.active>a {
+            color: var(--primary_color);
+        }
+
+        .text-primary {
+            --tw-text-opacity: 1;
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            --tw-border-opacity: 1;
+            border-color: var(--primary_color);
+        }
+
+        input[type="radio"]:checked {
+            background-color: var(--primary_color) !important;
+            color: var(--primary_color) !important;
+        }
+
+        body {
+            background-image: url(frontend/images/ticket-pattern.png);
+            background-repeat: repeat;
+        }
+
+        .login-with-google-btn {
+            transition: background-color .3s, box-shadow .3s;
+
+            padding: 12px 16px 12px 42px;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+
+            color: #757575;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+            background-color: white;
+            background-repeat: no-repeat;
+            background-position: 12px 11px;
+
+            &:hover {
+                box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+            }
+
+            &:active {
+                background-color: #eeeeee;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow:
+                    0 -1px 0 rgba(0, 0, 0, .04),
+                    0 2px 4px rgba(0, 0, 0, .25),
+                    0 0 0 3px #c8dafc;
+            }
+
+            &:disabled {
+                filter: grayscale(100%);
+                background-color: #ebebeb;
+                box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+                cursor: not-allowed;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex justify-center mt-24">
+        <div
+            class="bg-white shadow-2xl rounded-md p-5 mt-10 1xl:w-[28%] xl:w-[35%] lg:w-[40%] xmd:w-[50%] md:w-[60%] sm:w-[70%] xxsm:w-full">
+            <div class="flex justify-center mt-5">
+                <img src="images/upload/6924a58c8f5cc.png" alt="" class="object-cover w-auto h-20">
+            </div>
+            <p class="pt-6 text-3xl font-bold leading-9 text-center text-black font-poppins">
+                Entry Form</p>
+
+            <!-- Alert Messages -->
+            <div id="alertError"
+                class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="errorMessage">Please fill all required fields.</span>
+            </div>
+            <div id="alertSuccess"
+                class="hidden mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span id="successMessage">OTP sent successfully!</span>
+            </div>
+
+            <form id="entryForm" data-qa="form-login" name="login">
+                <input type="hidden" name="_token" value="rpfZ0s1VFBQsAJOmRQOThQ6UhUCJfV7xI553ZGxz" autocomplete="off">
+                <input type="hidden" value="https://XYLDGebPVrqC.com" name="url">
+
+                <div class="pt-5">
+                    <label for="name" class="text-base font-medium leading-6 text-black font-poppins">Full Name <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="name" required
+                        class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
+                        placeholder="Your Full Name">
+                </div>
+
+                <div class="pt-5">
+                    <label for="email" class="text-base font-medium leading-6 text-black font-poppins">Email <span
+                            class="text-red-500">*</span></label>
+                    <input type="email" name="email" id="email" required
+                        class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
+                        placeholder="Your Email">
+                </div>
+
+                <div class="pt-5">
+                    <label for="phone" class="text-base font-medium leading-6 text-black font-poppins">Phone
+                        Number <span class="text-red-500">*</span></label>
+                    <input type="tel" name="phone" id="phone" required
+                        class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
+                        placeholder="Your Phone Number">
+                </div>
+
+
+                <div class="pt-7">
+                    <button type="submit" id="generateOtpBtn"
+                        class="w-full py-4 text-sm font-medium leading-4 text-white rounded-lg font-poppins bg-primary focus:outline-none hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="btnText">Generate OTP</span>
+                        <span id="btnSpinner"
+                            class="hidden inline-block w-4 h-4 ml-2 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const entryForm = document.getElementById('entryForm');
+            const generateOtpBtn = document.getElementById('generateOtpBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const alertError = document.getElementById('alertError');
+            const alertSuccess = document.getElementById('alertSuccess');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Form submission handler
+            entryForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+
+                // Hide previous alerts
+                hideAlerts();
+
+                // Validate fields
+                if (!name || !email || !phone) {
+                    showError('Please fill all required fields.');
+                    return;
+                }
+
+                // Validate email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError('Please enter a valid email address.');
+                    return;
+                }
+
+                // Validate phone (basic validation - at least 10 digits)
+                const phoneDigits = phone.replace(/\D/g, '');
+                if (phoneDigits.length < 10) {
+                    showError('Please enter a valid phone number (at least 10 digits).');
+                    return;
+                }
+
+                // Show loading state
+                generateOtpBtn.disabled = true;
+                btnText.textContent = 'Sending OTP...';
+                btnSpinner.classList.remove('hidden');
+
+                // Simulate API call to send OTP
+                // In production, replace this with actual API call
+                simulateSendOTP(name, email, phone)
+                    .then(response => {
+                        // Store user data in sessionStorage for the verification page
+                        sessionStorage.setItem('otpUserData', JSON.stringify({
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            otpSentAt: new Date().toISOString()
+                        }));
+
+                        // Show success message
+                        showSuccess('OTP sent successfully to your email and phone! Redirecting...');
+
+                        // Redirect to verification page after short delay
+                        setTimeout(() => {
+                            window.location.href = 'verify-otp.html';
+                        }, 1500);
+                    })
+                    .catch(error => {
+                        // Reset button
+                        generateOtpBtn.disabled = false;
+                        btnText.textContent = 'Generate OTP';
+                        btnSpinner.classList.add('hidden');
+
+                        showError(error.message || 'Failed to send OTP. Please try again.');
+                    });
+            });
+
+            // API Configuration
+            const API_BASE_URL = 'api';
+
+            // Send OTP via Backend API
+            function simulateSendOTP(name, email, phone) {
+                return fetch(`${API_BASE_URL}/send-otp.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, phone })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Store entry_id for verification
+                            sessionStorage.setItem('entryId', data.data.entry_id);
+                            sessionStorage.setItem('entryNumber', data.data.entry_number);
+                            return data;
+                        } else {
+                            throw new Error(data.message || 'Failed to send OTP');
+                        }
+                    });
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                alertError.classList.remove('hidden');
+                alertSuccess.classList.add('hidden');
+            }
+
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                alertSuccess.classList.remove('hidden');
+                alertError.classList.add('hidden');
+            }
+
+            function hideAlerts() {
+                alertError.classList.add('hidden');
+                alertSuccess.classList.add('hidden');
+            }
+
+            // Real-time validation feedback
+            const inputs = document.querySelectorAll('input[required]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function () {
+                    if (this.value.trim() === '') {
+                        this.classList.add('border-red-500');
+                        this.classList.remove('border-green-500');
+                    } else {
+                        this.classList.remove('border-red-500');
+                        this.classList.add('border-green-500');
+                    }
+                });
+
+                input.addEventListener('input', function () {
+                    if (this.value.trim() !== '') {
+                        this.classList.remove('border-red-500');
+                    }
+                    hideAlerts();
+                });
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
+</body>
+
+</html>

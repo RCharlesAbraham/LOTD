@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login - LOTD</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link href="../images/upload/6924a58c8fc5a.png" rel="icon" type="image/png">
+    <style>
+        :root {
+            --primary_color: #e1b168;
+            --light_primary_color: #e1b1681a;
+            --profile_primary_color: #e1b16852;
+            --middle_light_primary_color: #e1b16885;
+        }
+
+        .bg-primary {
+            background-color: var(--primary_color);
+        }
+
+        .text-primary {
+            color: var(--primary_color);
+        }
+
+        .border-primary {
+            border-color: var(--primary_color);
+        }
+
+        body {
+            background-image: url(../frontend/images/ticket-pattern.png);
+            background-repeat: repeat;
+        }
+
+        .focus\:border-primary:focus {
+            border-color: var(--primary_color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex justify-center mt-24">
+        <div class="bg-white shadow-2xl rounded-md p-5 mt-10 w-full max-w-md">
+            <div class="flex justify-center mt-5">
+                <img src="../images/upload/6924a58c8f5cc.png" alt="Logo" class="object-cover w-auto h-20">
+            </div>
+
+            <p class="pt-6 text-3xl font-bold leading-9 text-center text-black font-poppins">
+                Admin Panel</p>
+            <p class="text-center text-gray-500 text-sm mt-2">Sign in to access the dashboard</p>
+
+            <!-- Alert Messages -->
+            <div id="alertError"
+                class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="errorMessage">Invalid credentials.</span>
+            </div>
+
+            <form id="loginForm" class="mt-6">
+                <div class="pt-3">
+                    <label for="username"
+                        class="text-base font-medium leading-6 text-black font-poppins">Username</label>
+                    <input type="text" name="username" id="username" required
+                        class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
+                        placeholder="Enter username">
+                </div>
+
+                <div class="pt-5">
+                    <label for="password"
+                        class="text-base font-medium leading-6 text-black font-poppins">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password" id="password" required
+                            class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
+                            placeholder="Enter password">
+                        <button type="button" id="togglePassword"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-7">
+                    <button type="submit" id="loginBtn"
+                        class="w-full py-4 text-sm font-medium leading-4 text-white rounded-lg font-poppins bg-primary focus:outline-none hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="btnText">Sign In</span>
+                        <span id="btnSpinner"
+                            class="hidden inline-block w-4 h-4 ml-2 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 pt-4 border-t border-gray-200">
+                <p class="text-center text-xs text-gray-400">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Secure Admin Access
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const togglePassword = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            const alertError = document.getElementById('alertError');
+            const errorMessage = document.getElementById('errorMessage');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Check if setup is required
+            fetch('api/check-setup.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && !data.is_setup) {
+                        window.location.href = 'setup.html';
+                    }
+                })
+                .catch(() => {
+                    // If check fails, stay on login page (don't redirect to avoid loop)
+                    console.log('Setup check failed, staying on login page');
+                });
+
+            // Check if already logged in
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function () {
+                const type = password.type === 'password' ? 'text' : 'password';
+                password.type = type;
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            // Form submission
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value.trim();
+                const pwd = password.value;
+
+                alertError.classList.add('hidden');
+                loginBtn.disabled = true;
+                btnText.textContent = 'Signing in...';
+                btnSpinner.classList.remove('hidden');
+
+                // API call to verify admin credentials
+                fetch('api/login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password: pwd })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        btnSpinner.classList.add('hidden');
+
+                        // Redirect to setup if needed
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                            return;
+                        }
+
+                        if (data.success) {
+                            btnText.textContent = 'Success!';
+                            sessionStorage.setItem('adminLoggedIn', 'true');
+                            sessionStorage.setItem('adminUser', data.user?.username || username);
+                            sessionStorage.setItem('adminToken', data.token || '');
+
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 500);
+                        } else {
+                            loginBtn.disabled = false;
+                            btnText.textContent = 'Sign In';
+                            errorMessage.textContent = data.message || 'Invalid credentials';
+                            alertError.classList.remove('hidden');
+                        }
+                    })
+                    .catch(error => {
+                        loginBtn.disabled = false;
+                        btnText.textContent = 'Sign In';
+                        btnSpinner.classList.add('hidden');
+                        errorMessage.textContent = 'Connection error. Please try again.';
+                        alertError.classList.remove('hidden');
+                    });
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</body>
+
+</html>
