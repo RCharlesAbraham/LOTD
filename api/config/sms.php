@@ -10,6 +10,6 @@ return [
     'twilio' => [
         'account_sid' => '',
         'auth_token' => '',
-        'from_number' => ''
+        'from_number' => '',
     ],
 ];
