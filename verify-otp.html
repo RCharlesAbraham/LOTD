@@ -480,6 +480,11 @@
                             sessionStorage.setItem('otpVerified', 'true');
                             sessionStorage.setItem('verifiedData', JSON.stringify(data.data));
 
+                            // Store QR code URL if available
+                            if (data.qr_code_url) {
+                                sessionStorage.setItem('qrCodeUrl', data.qr_code_url);
+                            }
+
                             // Redirect to next step after delay
                             setTimeout(() => {
                                 window.location.href = 'next-step.html';

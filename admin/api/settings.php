@@ -22,7 +22,7 @@ if (file_exists($configFile)) {
 }
 
 // Sensitive keys that should be masked when returned
-$sensitiveKeys = ['smtp_pass', 'sendgrid_api_key', 'mailgun_api_key', 'twilio_token', 'nexmo_secret', 'msg91_auth_key'];
+$sensitiveKeys = ['smtp_pass', 'sendgrid_api_key', 'mailgun_api_key', 'twilio_token', 'nexmo_secret', 'msg91_auth_key', 'ultramsg_token', 'twilio_whatsapp_token', 'meta_access_token', 'wati_access_token'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Load settings
@@ -102,6 +102,12 @@ function updateConfigFiles($settings) {
     if (isset($settings['sms_service'])) {
         $smsConfig = generateSmsConfig($settings);
         file_put_contents($configDir . '/sms.php', $smsConfig);
+    }
+    
+    // Update WhatsApp config if WhatsApp settings changed
+    if (isset($settings['whatsapp_service'])) {
+        $whatsappConfig = generateWhatsappConfig($settings);
+        file_put_contents($configDir . '/whatsapp.php', $whatsappConfig);
     }
 }
 
@@ -209,6 +215,71 @@ return [
         'auth_key' => '$authKey',
         'sender_id' => '$senderId',
         'template_id' => '$templateId'
+    ],
+";
+    }
+    
+    $config .= "];
+";
+    
+    return $config;
+}
+
+function generateWhatsappConfig($s) {
+    $service = $s['whatsapp_service'] ?? 'disabled';
+    
+    $config = "<?php
+/**
+ * WhatsApp Configuration
+ * Auto-generated from Admin Settings
+ */
+
+return [
+    'service' => '$service',
+";
+    
+    if ($service === 'ultramsg') {
+        $instanceId = $s['ultramsg_instance_id'] ?? '';
+        $token = $s['ultramsg_token'] ?? '';
+        
+        $config .= "
+    'ultramsg' => [
+        'instance_id' => '$instanceId',
+        'token' => '$token'
+    ],
+";
+    } elseif ($service === 'twilio') {
+        $sid = $s['twilio_whatsapp_sid'] ?? '';
+        $token = $s['twilio_whatsapp_token'] ?? '';
+        $phone = $s['twilio_whatsapp_phone'] ?? '';
+        
+        $config .= "
+    'twilio' => [
+        'account_sid' => '$sid',
+        'auth_token' => '$token',
+        'from_number' => '$phone'
+    ],
+";
+    } elseif ($service === 'meta') {
+        $phoneNumberId = $s['meta_phone_number_id'] ?? '';
+        $accessToken = $s['meta_access_token'] ?? '';
+        $apiVersion = $s['meta_api_version'] ?? 'v18.0';
+        
+        $config .= "
+    'meta' => [
+        'phone_number_id' => '$phoneNumberId',
+        'access_token' => '$accessToken',
+        'api_version' => '$apiVersion'
+    ],
+";
+    } elseif ($service === 'wati') {
+        $endpoint = $s['wati_endpoint'] ?? '';
+        $accessToken = $s['wati_access_token'] ?? '';
+        
+        $config .= "
+    'wati' => [
+        'api_endpoint' => '$endpoint',
+        'access_token' => '$accessToken'
     ],
 ";
     }

@@ -12,6 +12,7 @@
  */
 
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/WhatsAppService.php';
 
 setCorsHeaders();
 
@@ -164,17 +165,29 @@ try {
         
         $db->commit();
         
+        // Prepare user data for response and WhatsApp
+        $userData = [
+            'entry_number' => $entry['entry_number'],
+            'name' => $entry['name'],
+            'email' => $entry['email'],
+            'phone' => $entry['phone'],
+            'verified_at' => $verifiedAt
+        ];
+        
+        // Send WhatsApp message with QR code
+        $whatsappService = new WhatsAppService();
+        $whatsappResult = $whatsappService->sendRegistrationSuccess($entry['phone'], $userData);
+        
+        // Get QR code URL for response
+        $qrCodeUrl = $whatsappService->getQRCodeUrl($userData);
+        
         // Return success response
         echo json_encode([
             'success' => true,
             'message' => 'OTP verified successfully',
-            'data' => [
-                'entry_number' => $entry['entry_number'],
-                'name' => $entry['name'],
-                'email' => $entry['email'],
-                'phone' => $entry['phone'],
-                'verified_at' => $verifiedAt
-            ]
+            'data' => $userData,
+            'qr_code_url' => $qrCodeUrl,
+            'whatsapp' => $whatsappResult
         ]);
         
     } catch (Exception $e) {

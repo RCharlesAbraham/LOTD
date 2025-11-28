@@ -295,112 +295,6 @@
             </div>
         </div>
 
-        <!-- Email API Configuration -->
-        <div class="settings-card">
-            <div class="settings-card-header">
-                <h2 class="text-lg font-semibold text-gray-800">
-                    <i class="fas fa-envelope mr-2 text-primary"></i>
-                    Email API Configuration
-                </h2>
-            </div>
-            <div class="settings-card-body">
-                <form id="emailConfigForm">
-                    <div class="form-group">
-                        <label for="emailService">Email Service Provider</label>
-                        <select id="emailService" onchange="toggleEmailFields()">
-                            <option value="smtp">SMTP (Default)</option>
-                            <option value="sendgrid">SendGrid API</option>
-                            <option value="mailgun">Mailgun API</option>
-                            <option value="disabled">Disabled (Log Only)</option>
-                        </select>
-                    </div>
-
-                    <!-- SMTP Fields -->
-                    <div id="smtpFields" class="api-fields">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label for="smtpHost">SMTP Host</label>
-                                <input type="text" id="smtpHost" placeholder="smtp.gmail.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="smtpPort">SMTP Port</label>
-                                <input type="number" id="smtpPort" placeholder="587">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label for="smtpUser">SMTP Username</label>
-                                <input type="text" id="smtpUser" placeholder="your@email.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="smtpPass">SMTP Password</label>
-                                <input type="password" id="smtpPass" placeholder="App password or SMTP password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="smtpEncryption">Encryption</label>
-                            <select id="smtpEncryption">
-                                <option value="tls">TLS</option>
-                                <option value="ssl">SSL</option>
-                                <option value="none">None</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- SendGrid Fields -->
-                    <div id="sendgridFields" class="api-fields" style="display: none;">
-                        <div class="form-group">
-                            <label for="sendgridApiKey">SendGrid API Key</label>
-                            <input type="password" id="sendgridApiKey" placeholder="SG.xxxxxxxxxxxxxxxxxxxxxxxx">
-                            <p class="hint">Get your API key from <a href="https://app.sendgrid.com/settings/api_keys"
-                                    target="_blank" class="text-primary">SendGrid Dashboard</a></p>
-                        </div>
-                    </div>
-
-                    <!-- Mailgun Fields -->
-                    <div id="mailgunFields" class="api-fields" style="display: none;">
-                        <div class="form-group">
-                            <label for="mailgunApiKey">Mailgun API Key</label>
-                            <input type="password" id="mailgunApiKey" placeholder="key-xxxxxxxxxxxxxxxxxxxxxxxx">
-                        </div>
-                        <div class="form-group">
-                            <label for="mailgunDomain">Mailgun Domain</label>
-                            <input type="text" id="mailgunDomain" placeholder="mg.yourdomain.com">
-                            <p class="hint">Get your credentials from <a
-                                    href="https://app.mailgun.com/app/sending/domains" target="_blank"
-                                    class="text-primary">Mailgun Dashboard</a></p>
-                        </div>
-                    </div>
-
-                    <!-- Common Email Fields -->
-                    <div id="commonEmailFields">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label for="fromEmail">From Email Address</label>
-                                <input type="email" id="fromEmail" placeholder="noreply@yourdomain.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="fromName">From Name</label>
-                                <input type="text" id="fromName" placeholder="LOTD">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i>
-                            Save Email Settings
-                        </button>
-                        <button type="button" onclick="testEmail()" class="btn"
-                            style="background: #e5e7eb; color: #374151;">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Test Email
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <!-- SMS API Configuration -->
         <div class="settings-card">
             <div class="settings-card-header">
@@ -498,6 +392,118 @@
             </div>
         </div>
 
+        <!-- WhatsApp API Configuration -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fab fa-whatsapp mr-2" style="color: #25D366;"></i>
+                    WhatsApp API Configuration
+                </h2>
+                <p class="text-sm text-gray-500 mt-1">Send registration success message with QR code via WhatsApp</p>
+            </div>
+            <div class="settings-card-body">
+                <form id="whatsappConfigForm">
+                    <div class="form-group">
+                        <label for="whatsappService">WhatsApp Service Provider</label>
+                        <select id="whatsappService" onchange="toggleWhatsappFields()">
+                            <option value="disabled">Disabled</option>
+                            <option value="log">Log Mode (Testing)</option>
+                            <option value="ultramsg">UltraMsg (Easy API)</option>
+                            <option value="twilio">Twilio WhatsApp</option>
+                            <option value="meta">Meta (Facebook) Business API</option>
+                            <option value="wati">WATI</option>
+                        </select>
+                        <p class="hint">Log Mode saves messages to file for testing without sending real WhatsApp
+                            messages</p>
+                    </div>
+
+                    <!-- UltraMsg Fields -->
+                    <div id="ultramsgFields" class="whatsapp-fields" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="ultramsgInstanceId">Instance ID</label>
+                                <input type="text" id="ultramsgInstanceId" placeholder="instanceXXXXX">
+                            </div>
+                            <div class="form-group">
+                                <label for="ultramsgToken">Token</label>
+                                <input type="password" id="ultramsgToken" placeholder="Your UltraMsg Token">
+                            </div>
+                        </div>
+                        <p class="hint">Get your credentials from <a href="https://ultramsg.com/" target="_blank"
+                                class="text-primary">UltraMsg Dashboard</a> - Easy to setup, no Facebook approval needed
+                        </p>
+                    </div>
+
+                    <!-- Twilio WhatsApp Fields -->
+                    <div id="twilioWhatsappFields" class="whatsapp-fields" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="twilioWhatsappSid">Account SID</label>
+                                <input type="text" id="twilioWhatsappSid"
+                                    placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                            </div>
+                            <div class="form-group">
+                                <label for="twilioWhatsappToken">Auth Token</label>
+                                <input type="password" id="twilioWhatsappToken" placeholder="Your Twilio Auth Token">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="twilioWhatsappPhone">WhatsApp Phone Number</label>
+                            <input type="text" id="twilioWhatsappPhone" placeholder="whatsapp:+1234567890">
+                            <p class="hint">Format: whatsapp:+1234567890 - Get from <a
+                                    href="https://console.twilio.com/" target="_blank" class="text-primary">Twilio
+                                    Console</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Meta Business API Fields -->
+                    <div id="metaFields" class="whatsapp-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="metaPhoneNumberId">Phone Number ID</label>
+                            <input type="text" id="metaPhoneNumberId" placeholder="Your Phone Number ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="metaAccessToken">Access Token</label>
+                            <input type="password" id="metaAccessToken" placeholder="Your Meta Access Token">
+                        </div>
+                        <div class="form-group">
+                            <label for="metaApiVersion">API Version</label>
+                            <input type="text" id="metaApiVersion" value="v18.0" placeholder="v18.0">
+                            <p class="hint">Get from <a href="https://developers.facebook.com/" target="_blank"
+                                    class="text-primary">Meta for Developers</a> - Requires Facebook Business approval
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- WATI Fields -->
+                    <div id="watiFields" class="whatsapp-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="watiEndpoint">API Endpoint</label>
+                            <input type="text" id="watiEndpoint" placeholder="https://live-server-xxxxx.wati.io">
+                        </div>
+                        <div class="form-group">
+                            <label for="watiAccessToken">Access Token</label>
+                            <input type="password" id="watiAccessToken" placeholder="Your WATI Access Token">
+                            <p class="hint">Get from <a href="https://www.wati.io/" target="_blank"
+                                    class="text-primary">WATI Dashboard</a></p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save WhatsApp Settings
+                        </button>
+                        <button type="button" onclick="testWhatsapp()" class="btn"
+                            style="background: #25D366; color: white;">
+                            <i class="fab fa-whatsapp"></i>
+                            Send Test Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Danger Zone -->
         <div class="settings-card" style="border: 1px solid #fecaca;">
             <div class="settings-card-header" style="background-color: #fef2f2;">
@@ -539,7 +545,7 @@
                 </h2>
             </div>
             <div class="settings-card-body">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                     <div>
                         <p class="text-gray-500">Version</p>
                         <p class="font-medium">1.0.0</p>
@@ -547,10 +553,6 @@
                     <div>
                         <p class="text-gray-500">PHP Version</p>
                         <p class="font-medium" id="phpVersion">-</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500">Email Service</p>
-                        <p class="font-medium">SMTP (Local)</p>
                     </div>
                     <div>
                         <p class="text-gray-500">SMS Service</p>
@@ -584,21 +586,6 @@
                     if (s.otp_expiry) document.getElementById('otpExpiry').value = s.otp_expiry;
                     if (s.max_attempts) document.getElementById('maxAttempts').value = s.max_attempts;
 
-                    // Email Settings
-                    if (s.email_service) {
-                        document.getElementById('emailService').value = s.email_service;
-                        toggleEmailFields();
-                    }
-                    if (s.smtp_host) document.getElementById('smtpHost').value = s.smtp_host;
-                    if (s.smtp_port) document.getElementById('smtpPort').value = s.smtp_port;
-                    if (s.smtp_user) document.getElementById('smtpUser').value = s.smtp_user;
-                    if (s.smtp_encryption) document.getElementById('smtpEncryption').value = s.smtp_encryption;
-                    if (s.sendgrid_api_key) document.getElementById('sendgridApiKey').value = '••••••••';
-                    if (s.mailgun_api_key) document.getElementById('mailgunApiKey').value = '••••••••';
-                    if (s.mailgun_domain) document.getElementById('mailgunDomain').value = s.mailgun_domain;
-                    if (s.from_email) document.getElementById('fromEmail').value = s.from_email;
-                    if (s.from_name) document.getElementById('fromName').value = s.from_name;
-
                     // SMS Settings
                     if (s.sms_service) {
                         document.getElementById('smsService').value = s.sms_service;
@@ -611,22 +598,28 @@
                     if (s.msg91_sender_id) document.getElementById('msg91SenderId').value = s.msg91_sender_id;
                     if (s.msg91_template_id) document.getElementById('msg91TemplateId').value = s.msg91_template_id;
 
+                    // WhatsApp Settings
+                    if (s.whatsapp_service) {
+                        document.getElementById('whatsappService').value = s.whatsapp_service;
+                        toggleWhatsappFields();
+                    }
+                    if (s.ultramsg_instance_id) document.getElementById('ultramsgInstanceId').value = s.ultramsg_instance_id;
+                    if (s.ultramsg_token) document.getElementById('ultramsgToken').value = '••••••••';
+                    if (s.twilio_whatsapp_sid) document.getElementById('twilioWhatsappSid').value = s.twilio_whatsapp_sid;
+                    if (s.twilio_whatsapp_token) document.getElementById('twilioWhatsappToken').value = '••••••••';
+                    if (s.twilio_whatsapp_phone) document.getElementById('twilioWhatsappPhone').value = s.twilio_whatsapp_phone;
+                    if (s.meta_phone_number_id) document.getElementById('metaPhoneNumberId').value = s.meta_phone_number_id;
+                    if (s.meta_access_token) document.getElementById('metaAccessToken').value = '••••••••';
+                    if (s.meta_api_version) document.getElementById('metaApiVersion').value = s.meta_api_version;
+                    if (s.wati_endpoint) document.getElementById('watiEndpoint').value = s.wati_endpoint;
+                    if (s.wati_access_token) document.getElementById('watiAccessToken').value = '••••••••';
+
                     // Update system info
                     document.querySelector('[id="phpVersion"]').textContent = s.php_version || '-';
                 }
             } catch (e) {
                 console.log('Could not load settings');
             }
-        }
-
-        function toggleEmailFields() {
-            const service = document.getElementById('emailService').value;
-            document.querySelectorAll('.api-fields').forEach(el => el.style.display = 'none');
-            document.getElementById('commonEmailFields').style.display = service === 'disabled' ? 'none' : 'block';
-
-            if (service === 'smtp') document.getElementById('smtpFields').style.display = 'block';
-            else if (service === 'sendgrid') document.getElementById('sendgridFields').style.display = 'block';
-            else if (service === 'mailgun') document.getElementById('mailgunFields').style.display = 'block';
         }
 
         function toggleSmsFields() {
@@ -636,6 +629,16 @@
             if (service === 'twilio') document.getElementById('twilioFields').style.display = 'block';
             else if (service === 'nexmo') document.getElementById('nexmoFields').style.display = 'block';
             else if (service === 'msg91') document.getElementById('msg91Fields').style.display = 'block';
+        }
+
+        function toggleWhatsappFields() {
+            const service = document.getElementById('whatsappService').value;
+            document.querySelectorAll('.whatsapp-fields').forEach(el => el.style.display = 'none');
+
+            if (service === 'ultramsg') document.getElementById('ultramsgFields').style.display = 'block';
+            else if (service === 'twilio') document.getElementById('twilioWhatsappFields').style.display = 'block';
+            else if (service === 'meta') document.getElementById('metaFields').style.display = 'block';
+            else if (service === 'wati') document.getElementById('watiFields').style.display = 'block';
         }
 
         // Password change form
@@ -681,36 +684,6 @@
             });
         });
 
-        // Email config form
-        document.getElementById('emailConfigForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const service = document.getElementById('emailService').value;
-
-            const settings = {
-                email_service: service,
-                from_email: document.getElementById('fromEmail').value,
-                from_name: document.getElementById('fromName').value
-            };
-
-            if (service === 'smtp') {
-                settings.smtp_host = document.getElementById('smtpHost').value;
-                settings.smtp_port = document.getElementById('smtpPort').value;
-                settings.smtp_user = document.getElementById('smtpUser').value;
-                settings.smtp_encryption = document.getElementById('smtpEncryption').value;
-                const smtpPass = document.getElementById('smtpPass').value;
-                if (smtpPass && smtpPass !== '••••••••') settings.smtp_pass = smtpPass;
-            } else if (service === 'sendgrid') {
-                const apiKey = document.getElementById('sendgridApiKey').value;
-                if (apiKey && apiKey !== '••••••••') settings.sendgrid_api_key = apiKey;
-            } else if (service === 'mailgun') {
-                const apiKey = document.getElementById('mailgunApiKey').value;
-                if (apiKey && apiKey !== '••••••••') settings.mailgun_api_key = apiKey;
-                settings.mailgun_domain = document.getElementById('mailgunDomain').value;
-            }
-
-            await saveSettings(settings);
-        });
-
         // SMS config form
         document.getElementById('smsConfigForm').addEventListener('submit', async function (e) {
             e.preventDefault();
@@ -738,6 +711,36 @@
             await saveSettings(settings);
         });
 
+        // WhatsApp config form
+        document.getElementById('whatsappConfigForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const service = document.getElementById('whatsappService').value;
+
+            const settings = { whatsapp_service: service };
+
+            if (service === 'ultramsg') {
+                settings.ultramsg_instance_id = document.getElementById('ultramsgInstanceId').value;
+                const token = document.getElementById('ultramsgToken').value;
+                if (token && token !== '••••••••') settings.ultramsg_token = token;
+            } else if (service === 'twilio') {
+                settings.twilio_whatsapp_sid = document.getElementById('twilioWhatsappSid').value;
+                const token = document.getElementById('twilioWhatsappToken').value;
+                if (token && token !== '••••••••') settings.twilio_whatsapp_token = token;
+                settings.twilio_whatsapp_phone = document.getElementById('twilioWhatsappPhone').value;
+            } else if (service === 'meta') {
+                settings.meta_phone_number_id = document.getElementById('metaPhoneNumberId').value;
+                const token = document.getElementById('metaAccessToken').value;
+                if (token && token !== '••••••••') settings.meta_access_token = token;
+                settings.meta_api_version = document.getElementById('metaApiVersion').value;
+            } else if (service === 'wati') {
+                settings.wati_endpoint = document.getElementById('watiEndpoint').value;
+                const token = document.getElementById('watiAccessToken').value;
+                if (token && token !== '••••••••') settings.wati_access_token = token;
+            }
+
+            await saveSettings(settings);
+        });
+
         async function saveSettings(settings) {
             try {
                 const response = await fetch(`${API_BASE}/settings.php`, {
@@ -749,23 +752,6 @@
                 showAlert(data.success ? 'success' : 'error', data.message || 'Settings saved successfully');
             } catch (e) {
                 showAlert('success', 'Settings saved successfully');
-            }
-        }
-
-        async function testEmail() {
-            const email = prompt('Enter email address to send test:');
-            if (!email) return;
-
-            try {
-                const response = await fetch(`${API_BASE}/test-email.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                const data = await response.json();
-                showAlert(data.success ? 'success' : 'error', data.message);
-            } catch (e) {
-                showAlert('error', 'Failed to send test email');
             }
         }
 
@@ -783,6 +769,23 @@
                 showAlert(data.success ? 'success' : 'error', data.message);
             } catch (e) {
                 showAlert('error', 'Failed to send test SMS');
+            }
+        }
+
+        async function testWhatsapp() {
+            const phone = prompt('Enter phone number to send test WhatsApp message:');
+            if (!phone) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/test-whatsapp.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                showAlert(data.success ? 'success' : 'error', data.message);
+            } catch (e) {
+                showAlert('error', 'Failed to send test WhatsApp message');
             }
         }
 
