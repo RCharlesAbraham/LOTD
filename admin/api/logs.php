@@ -26,7 +26,7 @@ try {
     $where = '';
     $params = [];
     
-    if ($type !== '' && in_array($type, ['email', 'sms'])) {
+    if ($type !== '' && in_array($type, ['whatsapp', 'sms'])) {
         $where = 'WHERE n.notification_type = ?';
         $params[] = $type;
     }
@@ -38,7 +38,7 @@ try {
     $total = $stmt->fetch()['count'];
     
     // Get logs with entry info
-    $sql = "SELECT n.*, e.name, e.email as entry_email, e.phone as entry_phone, e.entry_number 
+    $sql = "SELECT n.*, e.name, e.whatsapp as entry_whatsapp, e.phone as entry_phone, e.entry_number 
             FROM notification_logs n 
             LEFT JOIN entries e ON n.entry_id = e.id 
             {$where}

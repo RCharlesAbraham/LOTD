@@ -55,7 +55,7 @@ class WhatsAppService {
         $qrData = json_encode([
             'entry_number' => $userData['entry_number'],
             'name' => $userData['name'],
-            'email' => $userData['email'],
+            'whatsapp' => $userData['whatsapp'],
             'phone' => $userData['phone'],
             'verified_at' => $userData['verified_at'],
             'app' => 'LOTD'
@@ -318,8 +318,8 @@ class WhatsAppService {
                "━━━━━━━━━━━━━━━━━\n" .
                "🔖 Entry Number: *{$userData['entry_number']}*\n" .
                "👤 Name: {$userData['name']}\n" .
-               "📧 Email: {$userData['email']}\n" .
-               "📱 Phone: {$userData['phone']}\n" .
+               "📱 WhatsApp: {$userData['whatsapp']}\n" .
+               "📞 Phone: {$userData['phone']}\n" .
                "✅ Verified: {$userData['verified_at']}\n" .
                "━━━━━━━━━━━━━━━━━\n\n" .
                "📎 *Your QR Code is attached below.*\n" .

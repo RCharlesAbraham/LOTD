@@ -24,13 +24,13 @@ CREATE TABLE `entries`
 (`id` int
 (11) NOT NULL AUTO_INCREMENT, `entry_number` varchar
 (20) NOT NULL, `name` varchar
-(255) NOT NULL, `email` varchar
-(255) NOT NULL, `phone` varchar
+(255) NOT NULL, `whatsapp` varchar
+(20) NOT NULL, `phone` varchar
 (20) NOT NULL, `is_verified` tinyint
 (1) DEFAULT '0', `verified_at` datetime DEFAULT NULL, `created_at` datetime DEFAULT NULL, `updated_at` datetime DEFAULT NULL, PRIMARY KEY
 (`id`), UNIQUE KEY `entry_number`
-(`entry_number`), KEY `idx_email`
-(`email`), KEY `idx_phone`
+(`entry_number`), KEY `idx_whatsapp`
+(`whatsapp`), KEY `idx_phone`
 (`phone`), KEY `idx_verified`
 (`is_verified`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

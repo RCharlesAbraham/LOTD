@@ -11,7 +11,6 @@
  */
 
 require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/mail.php';
 require_once __DIR__ . '/config/sms.php';
 
 setCorsHeaders();
@@ -106,19 +105,18 @@ try {
     $stmt = $db->prepare("INSERT INTO otps (entry_id, otp_code, otp_type, expires_at) VALUES (?, ?, 'both', ?)");
     $stmt->execute([$entryId, $otp, $expiresAt]);
     
-    // Send OTP via Email
-    $emailSubject = 'Your New LOTD Verification Code';
-    $emailBody = getOTPEmailTemplate($entry['name'], $otp);
-    $emailResult = sendEmail($entry['email'], $emailSubject, $emailBody);
+    // Send OTP via WhatsApp
+    $whatsappMessage = getOTPSMSMessage($otp);
+    $whatsappResult = sendSMS($entry['whatsapp'], $whatsappMessage); // Using SMS function for WhatsApp
     
-    // Log email
-    $stmt = $db->prepare("INSERT INTO notification_logs (entry_id, notification_type, recipient, subject, status, response) VALUES (?, 'email', ?, ?, ?, ?)");
+    // Log WhatsApp
+    $stmt = $db->prepare("INSERT INTO notification_logs (entry_id, notification_type, recipient, message, status, response) VALUES (?, 'whatsapp', ?, ?, ?, ?)");
     $stmt->execute([
         $entryId,
-        $entry['email'],
-        $emailSubject,
-        $emailResult['success'] ? 'sent' : 'failed',
-        json_encode($emailResult)
+        $entry['whatsapp'],
+        $whatsappMessage,
+        $whatsappResult['success'] ? 'sent' : 'failed',
+        json_encode($whatsappResult)
     ]);
     
     // Send OTP via SMS
@@ -143,7 +141,7 @@ try {
         'success' => true,
         'message' => 'New OTP sent successfully',
         'data' => [
-            'email_sent' => $emailResult['success'],
+            'whatsapp_sent' => $whatsappResult['success'],
             'sms_sent' => $smsResult['success'],
             'expires_in' => 600
         ]

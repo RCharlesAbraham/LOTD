@@ -84,7 +84,7 @@ try {
             'data' => [
                 'entry_number' => $entry['entry_number'],
                 'name' => $entry['name'],
-                'email' => $entry['email'],
+                'whatsapp' => $entry['whatsapp'],
                 'phone' => $entry['phone'],
                 'verified_at' => $entry['verified_at']
             ]
@@ -169,7 +169,7 @@ try {
         $userData = [
             'entry_number' => $entry['entry_number'],
             'name' => $entry['name'],
-            'email' => $entry['email'],
+            'whatsapp' => $entry['whatsapp'],
             'phone' => $entry['phone'],
             'verified_at' => $verifiedAt
         ];

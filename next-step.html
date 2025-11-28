@@ -164,8 +164,8 @@
                 </div>
 
                 <div class="info-row">
-                    <span class="info-label">Email</span>
-                    <span class="info-value" id="displayEmail">-</span>
+                    <span class="info-label">WhatsApp</span>
+                    <span class="info-value" id="displayWhatsapp">-</span>
                 </div>
 
                 <div class="info-row">
@@ -221,7 +221,7 @@
                 <div class="flex items-start">
                     <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2"></i>
                     <p class="text-xs text-gray-500">
-                        A confirmation message with QR code has been sent to your WhatsApp and email.
+                        A confirmation message with QR code has been sent to your WhatsApp and phone.
                         Please keep your entry number and QR code safe for future reference.
                     </p>
                 </div>
@@ -248,11 +248,11 @@
 
             // Display user data (prefer verified data from API)
             const displayName = verifiedData.name || userData.name || '-';
-            const displayEmail = verifiedData.email || userData.email || '-';
+            const displayWhatsapp = verifiedData.whatsapp || userData.whatsapp || '-';
             const displayPhone = verifiedData.phone || userData.phone || '-';
 
             document.getElementById('displayName').textContent = displayName;
-            document.getElementById('displayEmail').textContent = displayEmail;
+            document.getElementById('displayWhatsapp').textContent = displayWhatsapp;
             document.getElementById('displayPhone').textContent = displayPhone;
 
             // Display verification time
@@ -276,7 +276,7 @@
                 const qrData = JSON.stringify({
                     entry_number: entryNumber,
                     name: displayName,
-                    email: displayEmail,
+                    whatsapp: displayWhatsapp,
                     phone: displayPhone,
                     verified_at: verifiedData.verified_at || new Date().toISOString(),
                     app: 'LOTD'
@@ -297,7 +297,7 @@
 ${entryNumber}
 
 Name: ${displayName}
-Email: ${displayEmail}
+WhatsApp: ${displayWhatsapp}
 Phone: ${displayPhone}
 
 Verified At: ${timeString}

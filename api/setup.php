@@ -53,14 +53,14 @@ try {
             id INT AUTO_INCREMENT PRIMARY KEY,
             entry_number VARCHAR(20) UNIQUE NOT NULL,
             name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL,
+            whatsapp VARCHAR(20) NOT NULL,
             phone VARCHAR(20) NOT NULL,
             is_verified TINYINT(1) DEFAULT 0,
             verified_at DATETIME NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             
-            INDEX idx_email (email),
+            INDEX idx_whatsapp (whatsapp),
             INDEX idx_phone (phone),
             INDEX idx_entry_number (entry_number),
             INDEX idx_verified (is_verified)
@@ -74,7 +74,7 @@ try {
             id INT AUTO_INCREMENT PRIMARY KEY,
             entry_id INT NOT NULL,
             otp_code VARCHAR(6) NOT NULL,
-            otp_type ENUM('email', 'phone', 'both') DEFAULT 'both',
+            otp_type ENUM('whatsapp', 'phone', 'both') DEFAULT 'both',
             is_used TINYINT(1) DEFAULT 0,
             attempts INT DEFAULT 0,
             expires_at DATETIME NOT NULL,
@@ -110,7 +110,7 @@ try {
         CREATE TABLE IF NOT EXISTS notification_logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
             entry_id INT NOT NULL,
-            notification_type ENUM('email', 'sms') NOT NULL,
+            notification_type ENUM('whatsapp', 'sms') NOT NULL,
             recipient VARCHAR(255) NOT NULL,
             subject VARCHAR(255) NULL,
             message TEXT NULL,
@@ -134,7 +134,7 @@ try {
     echo "  ├── entries (stores user information)\n";
     echo "  ├── otps (stores OTP codes)\n";
     echo "  ├── otp_attempts (tracks verification attempts)\n";
-    echo "  └── notification_logs (email/SMS logs)\n";
+    echo "  └── notification_logs (whatsapp/SMS logs)\n";
     echo '</pre>';
     
     echo '<h2>🔗 API Endpoints</h2>';

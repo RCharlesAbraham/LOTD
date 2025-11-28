@@ -69,8 +69,8 @@ CREATE TABLE `entries`
 (20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar
 (255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar
-(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `whatsapp` varchar
+(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar
 (20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_verified` tinyint
@@ -88,9 +88,9 @@ UPDATE CURRENT_TIMESTAMP
 INSERT INTO `entries` (`
 id`,
 `entry_number
-`, `name`, `email`, `phone`, `is_verified`, `verified_at`, `created_at`, `updated_at`) VALUES
-(1, 'LOTDB94121', 'Demo', 'demo@gmail.com', '1234567890', 0, NULL, '2025-11-27 14:18:55', '2025-11-27 14:54:10'),
-(2, 'LOTD265E4E', 'Charles Abraham R', 'demo@email.om', '7904617924', 0, NULL, '2025-11-27 14:34:14', '2025-11-27 14:34:14');
+`, `name`, `whatsapp`, `phone`, `is_verified`, `verified_at`, `created_at`, `updated_at`) VALUES
+(1, 'LOTDB94121', 'Demo', '1234567890', '1234567890', 0, NULL, '2025-11-27 14:18:55', '2025-11-27 14:54:10'),
+(2, 'LOTD265E4E', 'Charles Abraham R', '7904617924', '7904617924', 0, NULL, '2025-11-27 14:34:14', '2025-11-27 14:34:14');
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `notification_logs`
   `id` int NOT NULL,
   `entry_id` int NOT NULL,
   `notification_type` enum
-('email','sms') COLLATE utf8mb4_unicode_ci NOT NULL,
+('whatsapp','sms') COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipient` varchar
 (255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `subject` varchar
@@ -123,11 +123,11 @@ INSERT INTO `notification_logs` (`
 id`,
 `entry_id
 `, `notification_type`, `recipient`, `subject`, `message`, `status`, `response`, `created_at`) VALUES
-(1, 1, 'email', 'demo@gmail.com', 'Your LOTD Verification Code', NULL, 'sent', '{\"success\":true,\"message\":\"Email sent successfully\"}', '2025-11-27 14:18:57'),
+(1, 1, 'whatsapp', '1234567890', NULL, 'Your LOTD verification code is: 697614. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"WhatsApp sent successfully\"}', '2025-11-27 14:18:57'),
 (2, 1, 'sms', '1234567890', NULL, 'Your LOTD verification code is: 697614. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"SMS logged successfully (test mode)\"}', '2025-11-27 14:18:57'),
-(3, 2, 'email', 'demo@email.om', 'Your LOTD Verification Code', NULL, 'sent', '{\"success\":true,\"message\":\"Email sent successfully\"}', '2025-11-27 14:34:14'),
+(3, 2, 'whatsapp', '7904617924', NULL, 'Your LOTD verification code is: 465586. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"WhatsApp sent successfully\"}', '2025-11-27 14:34:14'),
 (4, 2, 'sms', '7904617924', NULL, 'Your LOTD verification code is: 465586. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"SMS logged successfully (test mode)\"}', '2025-11-27 14:34:14'),
-(5, 1, 'email', 'demo@gmail.com', 'Your LOTD Verification Code', NULL, 'sent', '{\"success\":true,\"message\":\"Email sent successfully\"}', '2025-11-27 14:54:10'),
+(5, 1, 'whatsapp', '1234567890', NULL, 'Your LOTD verification code is: 565857. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"WhatsApp sent successfully\"}', '2025-11-27 14:54:10'),
 (6, 1, 'sms', '1234567890', NULL, 'Your LOTD verification code is: 565857. Valid for 10 minutes. Do not share this code.', 'sent', '{\"success\":true,\"message\":\"SMS logged successfully (test mode)\"}', '2025-11-27 14:54:10');
 
 -- --------------------------------------------------------
@@ -143,7 +143,7 @@ CREATE TABLE `otps`
   `otp_code` varchar
 (6) COLLATE utf8mb4_unicode_ci NOT NULL,
   `otp_type` enum
-('email','phone','both') COLLATE utf8mb4_unicode_ci DEFAULT 'both',
+('whatsapp','phone','both') COLLATE utf8mb4_unicode_ci DEFAULT 'both',
   `is_used` tinyint
 (1) DEFAULT '0',
   `attempts` int DEFAULT '0',
@@ -252,8 +252,8 @@ ADD PRIMARY KEY
 (`id`),
 ADD UNIQUE KEY `entry_number`
 (`entry_number`),
-ADD KEY `idx_email`
-(`email`),
+ADD KEY `idx_whatsapp`
+(`whatsapp`),
 ADD KEY `idx_phone`
 (`phone`),
 ADD KEY `idx_entry_number`

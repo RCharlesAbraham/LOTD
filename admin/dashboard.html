@@ -467,7 +467,7 @@
                         <tr>
                             <th>Entry #</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>WhatsApp</th>
                             <th>Phone</th>
                             <th>Status</th>
                             <th>Date</th>
@@ -542,7 +542,7 @@
                             <tr>
                                 <td class="font-medium">${entry.entry_number}</td>
                                 <td>${escapeHtml(entry.name)}</td>
-                                <td>${escapeHtml(entry.email)}</td>
+                                <td>${entry.whatsapp}</td>
                                 <td>${entry.phone}</td>
                                 <td>
                                     <span class="badge ${entry.is_verified ? 'badge-success' : 'badge-warning'}">
@@ -612,8 +612,8 @@
                                     <p class="font-medium text-lg">${escapeHtml(entry.name)}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500">Email</p>
-                                    <p class="font-medium">${escapeHtml(entry.email)}</p>
+                                    <p class="text-xs text-gray-500">WhatsApp</p>
+                                    <p class="font-medium">${entry.whatsapp}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Phone</p>

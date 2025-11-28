@@ -110,9 +110,9 @@
             font-weight: 500;
         }
 
-        .badge-email {
-            background-color: #eff6ff;
-            color: #2563eb;
+        .badge-whatsapp {
+            background-color: #dcfce7;
+            color: #16a34a;
         }
 
         .badge-sms {
@@ -203,7 +203,7 @@
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">OTP Logs</h1>
-                <p class="text-gray-500 text-sm">Email and SMS notification history</p>
+                <p class="text-gray-500 text-sm">WhatsApp and SMS notification history</p>
             </div>
         </div>
 
@@ -211,7 +211,7 @@
         <div class="bg-white rounded-lg p-4 mb-6 flex gap-4 items-center">
             <select id="typeFilter" class="filter-select" onchange="loadLogs()">
                 <option value="">All Types</option>
-                <option value="email">Email Only</option>
+                <option value="whatsapp">WhatsApp Only</option>
                 <option value="sms">SMS Only</option>
             </select>
         </div>
@@ -283,8 +283,8 @@
                 <tr>
                     <td class="font-medium">${log.entry_number || '-'}</td>
                     <td>
-                        <span class="badge ${log.notification_type === 'email' ? 'badge-email' : 'badge-sms'}">
-                            <i class="fas fa-${log.notification_type === 'email' ? 'envelope' : 'sms'} mr-1"></i>
+                        <span class="badge ${log.notification_type === 'whatsapp' ? 'badge-whatsapp' : 'badge-sms'}">
+                            <i class="fab fa-${log.notification_type === 'whatsapp' ? 'whatsapp' : 'sms'} mr-1"></i>
                             ${log.notification_type.toUpperCase()}
                         </span>
                     </td>

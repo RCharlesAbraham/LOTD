@@ -7,13 +7,12 @@
  * Request Body:
  * {
  *   "name": "John Doe",
- *   "email": "john@example.com",
+ *   "whatsapp": "1234567890",
  *   "phone": "1234567890"
  * }
  */
 
 require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/mail.php';
 require_once __DIR__ . '/config/sms.php';
 
 setCorsHeaders();
@@ -29,20 +28,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = json_decode(file_get_contents('php://input'), true);
 
 // Validate input
-if (empty($input['name']) || empty($input['email']) || empty($input['phone'])) {
+if (empty($input['name']) || empty($input['whatsapp']) || empty($input['phone'])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Name, email, and phone are required']);
+    echo json_encode(['success' => false, 'message' => 'Name, whatsapp, and phone are required']);
     exit;
 }
 
 $name = trim($input['name']);
-$email = trim(strtolower($input['email']));
+$whatsapp = preg_replace('/[^0-9+]/', '', trim($input['whatsapp']));
 $phone = preg_replace('/[^0-9+]/', '', trim($input['phone']));
 
-// Validate email format
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+// Validate whatsapp (at least 10 digits)
+if (strlen(preg_replace('/[^0-9]/', '', $whatsapp)) < 10) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid email format']);
+    echo json_encode(['success' => false, 'message' => 'Invalid WhatsApp number']);
     exit;
 }
 
@@ -74,9 +73,9 @@ try {
         exit;
     }
     
-    // Check if entry with this email/phone already exists and is not verified
-    $stmt = $db->prepare("SELECT id, entry_number FROM entries WHERE email = ? OR phone = ? ORDER BY created_at DESC LIMIT 1");
-    $stmt->execute([$email, $phone]);
+    // Check if entry with this whatsapp/phone already exists and is not verified
+    $stmt = $db->prepare("SELECT id, entry_number FROM entries WHERE whatsapp = ? OR phone = ? ORDER BY created_at DESC LIMIT 1");
+    $stmt->execute([$whatsapp, $phone]);
     $existingEntry = $stmt->fetch();
     
     if ($existingEntry) {
@@ -84,8 +83,8 @@ try {
         $entryNumber = $existingEntry['entry_number'];
         
         // Update existing entry
-        $stmt = $db->prepare("UPDATE entries SET name = ?, email = ?, phone = ?, updated_at = NOW() WHERE id = ?");
-        $stmt->execute([$name, $email, $phone, $entryId]);
+        $stmt = $db->prepare("UPDATE entries SET name = ?, whatsapp = ?, phone = ?, updated_at = NOW() WHERE id = ?");
+        $stmt->execute([$name, $whatsapp, $phone, $entryId]);
         
         // Invalidate old OTPs
         $stmt = $db->prepare("UPDATE otps SET is_used = 1 WHERE entry_id = ? AND is_used = 0");
@@ -95,8 +94,8 @@ try {
         $entryNumber = 'LOTD' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
         
         // Create new entry
-        $stmt = $db->prepare("INSERT INTO entries (entry_number, name, email, phone) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$entryNumber, $name, $email, $phone]);
+        $stmt = $db->prepare("INSERT INTO entries (entry_number, name, whatsapp, phone) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$entryNumber, $name, $whatsapp, $phone]);
         $entryId = $db->lastInsertId();
     }
     
@@ -110,19 +109,18 @@ try {
     $stmt = $db->prepare("INSERT INTO otps (entry_id, otp_code, otp_type, expires_at) VALUES (?, ?, 'both', ?)");
     $stmt->execute([$entryId, $otp, $expiresAt]);
     
-    // Send OTP via Email
-    $emailSubject = 'Your LOTD Verification Code';
-    $emailBody = getOTPEmailTemplate($name, $otp);
-    $emailResult = sendEmail($email, $emailSubject, $emailBody);
+    // Send OTP via WhatsApp
+    $whatsappMessage = getOTPSMSMessage($otp);
+    $whatsappResult = sendSMS($whatsapp, $whatsappMessage); // Using SMS function for WhatsApp
     
-    // Log email notification
-    $stmt = $db->prepare("INSERT INTO notification_logs (entry_id, notification_type, recipient, subject, status, response) VALUES (?, 'email', ?, ?, ?, ?)");
+    // Log WhatsApp notification
+    $stmt = $db->prepare("INSERT INTO notification_logs (entry_id, notification_type, recipient, message, status, response) VALUES (?, 'whatsapp', ?, ?, ?, ?)");
     $stmt->execute([
         $entryId, 
-        $email, 
-        $emailSubject, 
-        $emailResult['success'] ? 'sent' : 'failed',
-        json_encode($emailResult)
+        $whatsapp, 
+        $whatsappMessage, 
+        $whatsappResult['success'] ? 'sent' : 'failed',
+        json_encode($whatsappResult)
     ]);
     
     // Send OTP via SMS
@@ -146,11 +144,11 @@ try {
     // Return success response
     echo json_encode([
         'success' => true,
-        'message' => 'OTP sent successfully to your email and phone',
+        'message' => 'OTP sent successfully to your WhatsApp and phone',
         'data' => [
             'entry_id' => $entryId,
             'entry_number' => $entryNumber,
-            'email_sent' => $emailResult['success'],
+            'whatsapp_sent' => $whatsappResult['success'],
             'sms_sent' => $smsResult['success'],
             'expires_in' => 600 // seconds
         ]

@@ -216,7 +216,7 @@
                         <tr>
                             <th>Entry #</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>WhatsApp</th>
                             <th>Phone</th>
                             <th>Verified At</th>
                             <th>Actions</th>
@@ -256,7 +256,7 @@
                 <tr>
                     <td class="font-medium">${e.entry_number}</td>
                     <td>${escapeHtml(e.name)}</td>
-                    <td>${escapeHtml(e.email)}</td>
+                    <td>${e.whatsapp}</td>
                     <td>${e.phone}</td>
                     <td>${formatDate(e.verified_at)}</td>
                     <td><button onclick="deleteEntry(${e.id})" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button></td>

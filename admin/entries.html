@@ -307,7 +307,7 @@
         <div class="bg-white rounded-lg p-4 mb-6 flex flex-wrap gap-4 items-center">
             <div class="search-box flex-1 min-w-[200px]">
                 <i class="fas fa-search text-gray-400"></i>
-                <input type="text" id="searchInput" placeholder="Search by name, email, phone..."
+                <input type="text" id="searchInput" placeholder="Search by name, whatsapp, phone..."
                     onkeyup="handleSearch(event)">
             </div>
             <select id="statusFilter" class="filter-select" onchange="loadEntries()">
@@ -318,7 +318,7 @@
             <select id="sortBy" class="filter-select" onchange="loadEntries()">
                 <option value="created_at">Sort by Date</option>
                 <option value="name">Sort by Name</option>
-                <option value="email">Sort by Email</option>
+                <option value="whatsapp">Sort by WhatsApp</option>
             </select>
             <select id="sortOrder" class="filter-select" onchange="loadEntries()">
                 <option value="DESC">Newest First</option>
@@ -337,7 +337,7 @@
                             </th>
                             <th>Entry #</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>WhatsApp</th>
                             <th>Phone</th>
                             <th>Status</th>
                             <th>Created</th>
@@ -447,7 +447,7 @@
                     </td>
                     <td class="font-medium">${entry.entry_number}</td>
                     <td>${escapeHtml(entry.name)}</td>
-                    <td>${escapeHtml(entry.email)}</td>
+                    <td>${entry.whatsapp}</td>
                     <td>${entry.phone}</td>
                     <td>
                         <span class="badge ${entry.is_verified ? 'badge-success' : 'badge-warning'}">
@@ -538,8 +538,8 @@
                                     <p class="font-medium text-lg">${escapeHtml(entry.name)}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-500">Email</p>
-                                    <p class="font-medium">${escapeHtml(entry.email)}</p>
+                                    <p class="text-xs text-gray-500">WhatsApp</p>
+                                    <p class="font-medium">${entry.whatsapp}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Phone</p>

@@ -54,7 +54,7 @@ function handleGet($db) {
     $sortOrder = isset($_GET['sort_order']) && strtoupper($_GET['sort_order']) === 'ASC' ? 'ASC' : 'DESC';
     
     // Validate sort column
-    $allowedSorts = ['created_at', 'name', 'email', 'phone', 'entry_number', 'verified_at'];
+    $allowedSorts = ['created_at', 'name', 'whatsapp', 'phone', 'entry_number', 'verified_at'];
     if (!in_array($sortBy, $allowedSorts)) {
         $sortBy = 'created_at';
     }
@@ -64,7 +64,7 @@ function handleGet($db) {
     $params = [];
     
     if (!empty($search)) {
-        $where[] = "(name LIKE ? OR email LIKE ? OR phone LIKE ? OR entry_number LIKE ?)";
+        $where[] = "(name LIKE ? OR whatsapp LIKE ? OR phone LIKE ? OR entry_number LIKE ?)";
         $searchParam = "%{$search}%";
         $params = array_merge($params, [$searchParam, $searchParam, $searchParam, $searchParam]);
     }

@@ -20,7 +20,7 @@ try {
         $params[] = intval($status);
     }
     
-    $stmt = $db->prepare("SELECT entry_number, name, email, phone, is_verified, verified_at, created_at FROM entries {$where} ORDER BY created_at DESC");
+    $stmt = $db->prepare("SELECT entry_number, name, whatsapp, phone, is_verified, verified_at, created_at FROM entries {$where} ORDER BY created_at DESC");
     $stmt->execute($params);
     $entries = $stmt->fetchAll();
     
@@ -33,14 +33,14 @@ try {
     $output = fopen('php://output', 'w');
     
     // CSV headers
-    fputcsv($output, ['Entry Number', 'Name', 'Email', 'Phone', 'Status', 'Verified At', 'Created At']);
+    fputcsv($output, ['Entry Number', 'Name', 'WhatsApp', 'Phone', 'Status', 'Verified At', 'Created At']);
     
     // Data rows
     foreach ($entries as $entry) {
         fputcsv($output, [
             $entry['entry_number'],
             $entry['name'],
-            $entry['email'],
+            $entry['whatsapp'],
             $entry['phone'],
             $entry['is_verified'] ? 'Verified' : 'Pending',
             $entry['verified_at'] ?? '-',

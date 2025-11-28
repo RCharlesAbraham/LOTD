@@ -136,11 +136,11 @@
                 </div>
 
                 <div class="pt-5">
-                    <label for="email" class="text-base font-medium leading-6 text-black font-poppins">Email <span
-                            class="text-red-500">*</span></label>
-                    <input type="email" name="email" id="email" required
+                    <label for="whatsapp" class="text-base font-medium leading-6 text-black font-poppins">WhatsApp
+                        Number <span class="text-red-500">*</span></label>
+                    <input type="tel" name="whatsapp" id="whatsapp" required
                         class="z-20 block w-full p-3 text-sm font-normal text-black border rounded-lg font-poppins border-gray-light focus:outline-none focus:border-primary"
-                        placeholder="Your Email">
+                        placeholder="Your WhatsApp Number">
                 </div>
 
                 <div class="pt-5">
@@ -181,22 +181,22 @@
 
                 // Get form values
                 const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
+                const whatsapp = document.getElementById('whatsapp').value.trim();
                 const phone = document.getElementById('phone').value.trim();
 
                 // Hide previous alerts
                 hideAlerts();
 
                 // Validate fields
-                if (!name || !email || !phone) {
+                if (!name || !whatsapp || !phone) {
                     showError('Please fill all required fields.');
                     return;
                 }
 
-                // Validate email format
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    showError('Please enter a valid email address.');
+                // Validate whatsapp (at least 10 digits)
+                const whatsappDigits = whatsapp.replace(/\D/g, '');
+                if (whatsappDigits.length < 10) {
+                    showError('Please enter a valid WhatsApp number (at least 10 digits).');
                     return;
                 }
 
@@ -214,18 +214,18 @@
 
                 // Simulate API call to send OTP
                 // In production, replace this with actual API call
-                simulateSendOTP(name, email, phone)
+                simulateSendOTP(name, whatsapp, phone)
                     .then(response => {
                         // Store user data in sessionStorage for the verification page
                         sessionStorage.setItem('otpUserData', JSON.stringify({
                             name: name,
-                            email: email,
+                            whatsapp: whatsapp,
                             phone: phone,
                             otpSentAt: new Date().toISOString()
                         }));
 
                         // Show success message
-                        showSuccess('OTP sent successfully to your email and phone! Redirecting...');
+                        showSuccess('OTP sent successfully to your WhatsApp and phone! Redirecting...');
 
                         // Redirect to verification page after short delay
                         setTimeout(() => {
@@ -246,13 +246,13 @@
             const API_BASE_URL = 'api';
 
             // Send OTP via Backend API
-            function simulateSendOTP(name, email, phone) {
+            function simulateSendOTP(name, whatsapp, phone) {
                 return fetch(`${API_BASE_URL}/send-otp.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ name, email, phone })
+                    body: JSON.stringify({ name, whatsapp, phone })
                 })
                     .then(response => response.json())
                     .then(data => {

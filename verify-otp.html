@@ -186,14 +186,14 @@
                 Verify OTP</p>
 
             <p class="text-center text-gray-500 text-sm mt-2 font-poppins">
-                We've sent a verification code to your email and phone number
+                We've sent a verification code to your WhatsApp and phone number
             </p>
 
             <!-- User Info Display -->
             <div class="info-card mt-4">
                 <div class="flex items-center justify-between text-sm">
-                    <span class="text-gray-500">Email:</span>
-                    <span id="displayEmail" class="font-medium text-gray-700">-</span>
+                    <span class="text-gray-500">WhatsApp:</span>
+                    <span id="displayWhatsapp" class="font-medium text-gray-700">-</span>
                 </div>
                 <div class="flex items-center justify-between text-sm mt-2">
                     <span class="text-gray-500">Phone:</span>
@@ -212,7 +212,7 @@
             </div>
             <div id="alertInfo" class="alert alert-info mt-4">
                 <i class="fas fa-info-circle mr-2"></i>
-                <span id="infoMessage">OTP has been resent to your email and phone.</span>
+                <span id="infoMessage">OTP has been resent to your WhatsApp and phone.</span>
             </div>
 
             <form id="otpForm" class="mt-6">
@@ -280,8 +280,8 @@
             const entryNumber = sessionStorage.getItem('entryNumber');
 
             // Display user info
-            if (userData.email) {
-                document.getElementById('displayEmail').textContent = maskEmail(userData.email);
+            if (userData.whatsapp) {
+                document.getElementById('displayWhatsapp').textContent = maskPhone(userData.whatsapp);
             }
             if (userData.phone) {
                 document.getElementById('displayPhone').textContent = maskPhone(userData.phone);
@@ -414,7 +414,7 @@
                         this.innerHTML = '<i class="fas fa-redo mr-1"></i> Resend OTP';
 
                         if (data.success) {
-                            showAlert('info', 'New OTP has been sent to your email and phone.');
+                            showAlert('info', 'New OTP has been sent to your WhatsApp and phone.');
 
                             // Clear inputs
                             otpInputs.forEach(input => {
@@ -526,13 +526,6 @@
             }
 
             // Utility functions
-            function maskEmail(email) {
-                if (!email) return '-';
-                const [localPart, domain] = email.split('@');
-                if (localPart.length <= 2) return email;
-                return localPart.charAt(0) + '*'.repeat(localPart.length - 2) + localPart.charAt(localPart.length - 1) + '@' + domain;
-            }
-
             function maskPhone(phone) {
                 if (!phone) return '-';
                 if (phone.length <= 4) return phone;
