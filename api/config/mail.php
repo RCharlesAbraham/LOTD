@@ -7,7 +7,7 @@
 return [
     'service' => '',
     'from_email' => '',
-    'from_name' => '',
+    'from_name' => ''
 
     'sendgrid' => [
         'api_key' => ''
