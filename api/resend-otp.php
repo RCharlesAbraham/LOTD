@@ -11,7 +11,7 @@
  */
 
 require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/sms.php';
+require_once __DIR__ . '/sms_helper.php';
 
 setCorsHeaders();
 

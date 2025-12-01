@@ -12,7 +12,8 @@ $is_setup = false;
 // Check for installed marker file
 $configFile = dirname(__DIR__) . '/../api/config/installed.php';
 if (file_exists($configFile)) {
-    $is_setup = true;
+    require_once $configFile;
+    $is_setup = defined('INSTALLED') && INSTALLED === true;
 }
 
 // Also check if admin_users table has data

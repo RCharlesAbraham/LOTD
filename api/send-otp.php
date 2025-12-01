@@ -12,8 +12,13 @@
  * }
  */
 
+// Enable error logging
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/php_errors.log');
+
 require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/sms.php';
+require_once __DIR__ . '/sms_helper.php';
 
 setCorsHeaders();
 
@@ -154,13 +159,18 @@ try {
         ]
     ]);
     
-} catch (Exception $e) {
+} catch (Throwable $e) {
     // Log the error
-    error_log('Send OTP Error: ' . $e->getMessage());
+    error_log('Send OTP Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     
     http_response_code(500);
     echo json_encode([
         'success' => false, 
-        'message' => 'An error occurred while sending OTP. Please try again.'
+        'message' => 'An error occurred while sending OTP. Please try again.',
+        'debug' => [
+            'error' => $e->getMessage(),
+            'file' => basename($e->getFile()),
+            'line' => $e->getLine()
+        ]
     ]);
 }

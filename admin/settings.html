@@ -309,12 +309,39 @@
                         <label for="smsService">SMS Service Provider</label>
                         <select id="smsService" onchange="toggleSmsFields()">
                             <option value="log">Log Mode (Testing)</option>
+                            <option value="fast2sms">Fast2SMS (India)</option>
                             <option value="twilio">Twilio</option>
                             <option value="nexmo">Nexmo / Vonage</option>
                             <option value="msg91">MSG91</option>
                             <option value="disabled">Disabled</option>
                         </select>
                         <p class="hint">Log Mode saves OTPs to file instead of sending real SMS (for testing)</p>
+                    </div>
+
+                    <!-- Fast2SMS Fields -->
+                    <div id="fast2smsFields" class="sms-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="fast2smsApiKey">Fast2SMS API Key</label>
+                            <input type="text" id="fast2smsApiKey" placeholder="Your Fast2SMS API Key">
+                            <p class="hint">Get API key from <a href="https://www.fast2sms.com/dashboard/dev-api" target="_blank"
+                                    class="text-primary">Fast2SMS Dashboard</a></p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="fast2smsSenderId">Sender ID (6 chars)</label>
+                                <input type="text" id="fast2smsSenderId" placeholder="FSTSMS" maxlength="6">
+                                <p class="hint">6-character sender ID from Fast2SMS</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="fast2smsRoute">SMS Route</label>
+                                <select id="fast2smsRoute">
+                                    <option value="dlt">DLT Route (Recommended)</option>
+                                    <option value="otp">OTP Route</option>
+                                    <option value="q">Quick Route</option>
+                                </select>
+                                <p class="hint">DLT route for registered templates</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Twilio Fields -->
@@ -626,7 +653,8 @@
             const service = document.getElementById('smsService').value;
             document.querySelectorAll('.sms-fields').forEach(el => el.style.display = 'none');
 
-            if (service === 'twilio') document.getElementById('twilioFields').style.display = 'block';
+            if (service === 'fast2sms') document.getElementById('fast2smsFields').style.display = 'block';
+            else if (service === 'twilio') document.getElementById('twilioFields').style.display = 'block';
             else if (service === 'nexmo') document.getElementById('nexmoFields').style.display = 'block';
             else if (service === 'msg91') document.getElementById('msg91Fields').style.display = 'block';
         }
@@ -691,7 +719,12 @@
 
             const settings = { sms_service: service };
 
-            if (service === 'twilio') {
+            if (service === 'fast2sms') {
+                const apiKey = document.getElementById('fast2smsApiKey').value;
+                if (apiKey && apiKey !== '••••••••') settings.fast2sms_api_key = apiKey;
+                settings.fast2sms_sender_id = document.getElementById('fast2smsSenderId').value;
+                settings.fast2sms_route = document.getElementById('fast2smsRoute').value;
+            } else if (service === 'twilio') {
                 settings.twilio_sid = document.getElementById('twilioSid').value;
                 const token = document.getElementById('twilioToken').value;
                 if (token && token !== '••••••••') settings.twilio_token = token;

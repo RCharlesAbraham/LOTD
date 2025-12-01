@@ -5,11 +5,12 @@
  */
 
 return [
-    'service' => 'twilio',
+    'service' => 'fast2sms',
 
-    'twilio' => [
-        'account_sid' => '',
-        'auth_token' => '',
-        'from_number' => '',
+    'fast2sms' => [
+        'api_key' => 'VC6zmUATyrWXxJ1SdgtnFZl8D3foERvNpj294KMY0bQHGBshIwMGbAE5eomWrCtTf9nXNFYg8ciUH1SD',
+        'sender_id' => 'Demo',
+        'route' => 'otp',
+        'language' => 'english'
     ],
 ];

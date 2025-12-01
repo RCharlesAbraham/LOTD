@@ -181,7 +181,20 @@ return [
     'service' => '$service',
 ";
     
-    if ($service === 'twilio') {
+    if ($service === 'fast2sms') {
+        $apiKey = $s['fast2sms_api_key'] ?? '';
+        $senderId = $s['fast2sms_sender_id'] ?? 'FSTSMS';
+        $route = $s['fast2sms_route'] ?? 'dlt';
+        
+        $config .= "
+    'fast2sms' => [
+        'api_key' => '$apiKey',
+        'sender_id' => '$senderId',
+        'route' => '$route',
+        'language' => 'english'
+    ],
+";
+    } elseif ($service === 'twilio') {
         $sid = $s['twilio_sid'] ?? '';
         $token = $s['twilio_token'] ?? '';
         $phone = $s['twilio_phone'] ?? '';

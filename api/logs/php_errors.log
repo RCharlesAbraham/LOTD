@@ -1,0 +1,5 @@
+[30-Nov-2025 20:44:13 UTC] Send OTP Error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'lotd_db.otp_attempts' doesn't exist
+[30-Nov-2025 20:45:24 UTC] Send OTP Error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'lotd_db.otp_attempts' doesn't exist in C:\laragon\www\LOTD\api\send-otp.php:65
+[30-Nov-2025 20:45:30 UTC] Send OTP Error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'lotd_db.otp_attempts' doesn't exist in C:\laragon\www\LOTD\api\send-otp.php:65
+[30-Nov-2025 20:48:20 UTC] Send OTP Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'whatsapp' in 'where clause' in C:\laragon\www\LOTD\api\send-otp.php:82
+[30-Nov-2025 20:51:10 UTC] Send OTP Error: SQLSTATE[HY000]: General error: 1364 Field 'email' doesn't have a default value in C:\laragon\www\LOTD\api\send-otp.php:103

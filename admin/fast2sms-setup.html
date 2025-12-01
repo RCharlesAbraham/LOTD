@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast2SMS Setup Guide - LOTD</title>
+    <link href="../css/app.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9fafb;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #374151;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        .step {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #e1b168;
+        }
+        .step-number {
+            background: #e1b168;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        code {
+            background: #1f2937;
+            color: #10b981;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success-box {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        a {
+            color: #e1b168;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .btn {
+            display: inline-block;
+            background: #e1b168;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #c9993d;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 Fast2SMS Integration Guide</h1>
+        <p>Follow this guide to set up Fast2SMS for sending OTP SMS in your LOTD application.</p>
+    </div>
+
+    <div class="card">
+        <h2>📝 What is Fast2SMS?</h2>
+        <p>Fast2SMS is an Indian SMS gateway provider that offers:</p>
+        <ul>
+            <li>✅ Easy API integration</li>
+            <li>✅ Affordable pricing (starting from ₹10)</li>
+            <li>✅ Fast delivery within India</li>
+            <li>✅ OTP route for reliable delivery</li>
+            <li>✅ No monthly fees - pay as you go</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🔧 Setup Steps</h2>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Create Fast2SMS Account</strong>
+            <p>Visit <a href="https://www.fast2sms.com/register" target="_blank">https://www.fast2sms.com/register</a> and create a free account.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Verify Your Account</strong>
+            <p>Complete email and phone verification to activate your account.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Add Credits</strong>
+            <p>Go to <strong>Wallet</strong> section and add credits. Minimum recharge is ₹10.</p>
+            <div class="info-box">
+                💰 Pricing: Approximately ₹0.15 to ₹0.20 per SMS (varies by route)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Get API Key</strong>
+            <p>Navigate to: <strong>Dev API</strong> → <strong>API Keys</strong></p>
+            <p>Copy your API key from the dashboard.</p>
+            <div class="warning-box">
+                ⚠️ Keep your API key secure! Don't share it publicly.
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Configure in LOTD Admin</strong>
+            <ol>
+                <li>Login to LOTD Admin Panel</li>
+                <li>Go to <strong>Settings</strong> page</li>
+                <li>Find <strong>SMS API Configuration</strong> section</li>
+                <li>Select <code>Fast2SMS (India)</code> from dropdown</li>
+                <li>Enter your API Key</li>
+                <li>Set Sender ID (6 characters, e.g., "FSTSMS")</li>
+                <li>Choose Route:
+                    <ul>
+                        <li><strong>DLT Route</strong>: For registered templates (recommended for production)</li>
+                        <li><strong>OTP Route</strong>: Quick OTP delivery</li>
+                        <li><strong>Quick Route</strong>: General purpose</li>
+                    </ul>
+                </li>
+                <li>Click <strong>Save SMS Settings</strong></li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Test the Integration</strong>
+            <p>Use the Test SMS button in admin settings to send a test message to your phone number.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📱 DLT Registration (For Production)</h2>
+        <p>For commercial use in India, you need to register with DLT (Distributed Ledger Technology):</p>
+        
+        <div class="step">
+            <strong>Register Your Business</strong>
+            <p>Register your business entity on DLT portal through Fast2SMS.</p>
+        </div>
+
+        <div class="step">
+            <strong>Create SMS Template</strong>
+            <p>Submit your OTP message template for approval. Example:</p>
+            <code>Your LOTD verification code is: {#var#}. Valid for 10 minutes. Do not share this code.</code>
+        </div>
+
+        <div class="step">
+            <strong>Get Template ID</strong>
+            <p>After approval, you'll receive a Template ID to use with DLT route.</p>
+        </div>
+
+        <div class="info-box">
+            📝 <strong>Note:</strong> DLT registration is mandatory for commercial SMS in India. For testing, you can use OTP route without DLT.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🔍 Testing</h2>
+        <p>Test your Fast2SMS integration:</p>
+        
+        <div class="success-box">
+            <strong>Test in Admin Panel:</strong>
+            <ol>
+                <li>Go to Admin → Settings</li>
+                <li>Scroll to SMS Configuration</li>
+                <li>Click "Test SMS" button</li>
+                <li>Enter your 10-digit phone number</li>
+                <li>Check if SMS is received</li>
+            </ol>
+        </div>
+
+        <div class="success-box">
+            <strong>Test Live OTP:</strong>
+            <ol>
+                <li>Go to your entry form</li>
+                <li>Enter details and generate OTP</li>
+                <li>Verify OTP is received on phone</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📊 API Routes Comparison</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f3f4f6;">
+                    <th style="padding: 10px; border: 1px solid #e5e7eb;">Route</th>
+                    <th style="padding: 10px; border: 1px solid #e5e7eb;">Speed</th>
+                    <th style="padding: 10px; border: 1px solid #e5e7eb;">DLT Required</th>
+                    <th style="padding: 10px; border: 1px solid #e5e7eb;">Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;"><strong>DLT</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Fast</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Yes</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Production, Commercial</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;"><strong>OTP</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Very Fast</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">No</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">OTP verification, Testing</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;"><strong>Quick (Q)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Medium</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">No</td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb;">Testing, Development</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>❓ Troubleshooting</h2>
+        
+        <div class="step">
+            <strong>SMS not received?</strong>
+            <ul>
+                <li>Check if you have sufficient balance in Fast2SMS wallet</li>
+                <li>Verify API key is correct</li>
+                <li>Ensure phone number is 10 digits (without +91)</li>
+                <li>Check if number is valid and active</li>
+                <li>Try switching from DLT to OTP route for testing</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <strong>API Error?</strong>
+            <ul>
+                <li>Check API key has not expired</li>
+                <li>Verify sender ID is exactly 6 characters</li>
+                <li>Check Fast2SMS dashboard for error logs</li>
+                <li>Ensure your IP is not blocked</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <strong>Check Logs</strong>
+            <p>Check notification logs in admin panel: <strong>Logs</strong> → <strong>Notification Logs</strong></p>
+            <p>Look for error messages in the response column.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🔗 Useful Links</h2>
+        <a href="https://www.fast2sms.com/dashboard" target="_blank" class="btn">Fast2SMS Dashboard</a>
+        <a href="https://www.fast2sms.com/dashboard/dev-api" target="_blank" class="btn">API Documentation</a>
+        <a href="../admin/settings.html" class="btn">Go to Admin Settings</a>
+    </div>
+
+    <div class="card">
+        <div class="success-box">
+            <strong>✅ Setup Complete!</strong>
+            <p>Once configured, your LOTD application will automatically send OTP SMS via Fast2SMS whenever a user requests an OTP.</p>
+        </div>
+    </div>
+</body>
+</html>
